@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-  <head>
-    
-<meta charset="UTF-8"/>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-cn">
+<head>
+  <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
@@ -19,16 +32,51 @@
 
 
 
-  <link rel="alternate" href="/default" title="无处安放的灵魂">
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
-<link rel="canonical" href="http://yoursite.com/"/>
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
 
 
 <meta property="og:type" content="website">
@@ -40,185 +88,770 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
-<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
 
-
-
-
-
-<script type="text/javascript">
-  var themeConfig = {
-    fancybox: {
-      enable: false
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
     },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
   };
 </script>
 
 
 
+  <link rel="canonical" href="http://yoursite.com/"/>
 
+
+
+
+
+  <title>无处安放的灵魂</title>
   
 
 
 
-    <title> 无处安放的灵魂 - </title>
-  <meta name="generator" content="Hexo 4.2.0"></head>
-
-  <body>
-    <div id="page">
-      <header id="masthead"><div class="site-header-inner">
-    <h1 class="site-title">
-        <a href="/." class="logo">无处安放的灵魂</a>
-    </h1>
-
-    <nav id="nav-top">
-        
-            <ul id="menu-top" class="nav-top-items">
-                
-                    <li class="menu-item">
-                        <a href="/archives">
-                            
-                            
-                                Archives
-                            
-                        </a>
-                    </li>
-                
-                    <li class="menu-item">
-                        <a href="/about">
-                            
-                            
-                                About
-                            
-                        </a>
-                    </li>
-                
-            </ul>
-        
-  </nav>
-</div>
-
-      </header>
-      <div id="content">
-        
-    <div id="primary" class="home">
-        
-            
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2020/01/11/Algorithms-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">Algorithms-快速排序</a>
-        
-      </h1>
-
-      <time class="post-time">
-          1月 11 2020
-      </time>
-    </header>
 
 
 
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
     
-        <div class="post-excerpt post-content">
-            
-            
+  
 
-            
-          
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
 
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
     
-  </article>
 
-        
-            
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">Algorithms-归并排序</a>
-        
-      </h1>
-
-      <time class="post-time">
-          1月 11 2020
-      </time>
-    </header>
-
-
-
-    
-        <div class="post-excerpt post-content">
-            
-            
-
-            
-          
-
-    
-  </article>
-
-        
-        
-  <nav class="pagination">
-    
-    
-  </nav>
-
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无处安放的灵魂</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-    <div id="secondary">
-    
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
 
-    
-
-    
-    <section id="tags" class="widget-area widget_tags">
-        <h3 class="widget-title">Tags</h3>
-        
-    </section>
-
-
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
+<nav class="site-nav">
+  
 
-      </div>
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
 
-      <footer id="colophon"><span class="copyright-year">
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
     
-        &copy;
-    
-        2014 -
-    
-    2020
-    <span class="footer-author">nightmoonGu.</span>
-    <span class="power-by">
-        由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a> 强力驱动
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/11/Algorithms-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightmoonGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
-</span>
 
-      </footer>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
 
-      <div class="back-to-top" id="back-to-top">
-        <i class="iconfont icon-up"></i>
-      </div>
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/11/Algorithms-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" itemprop="url">Algorithms-快速排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-11T18:50:44+08:00">
+                2020-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>年底总是忙碌的时候……..</p>
+<p>作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~</p>
+<p>这篇文章整理排序算法—-快速排序</p>
+<p>快速排序（时间复杂度O(nlogn)）作为排序算法中的佼佼者，同样采用分治的思想。</p>
+<h5 id="基本思想："><a href="#基本思想：" class="headerlink" title="基本思想："></a>基本思想：</h5><p>快速排序的主要思想是分治法。主要思路：</p>
+<p>1、首先设定一个基准值，通过该基准值值将数组分成左右两部分</p>
+<p>2、将大于基准值的数据集中到数组右边，将小于基准值的数据集中到数组左边</p>
+<p>3、左边和右边的数据再做独立排序，各取基准值，再分成两部分，以此类推，可以看出这是一个递推操作。</p>
+<h5 id="核心思路："><a href="#核心思路：" class="headerlink" title="核心思路："></a>核心思路：</h5><p>选一个基准值（一般选择第一个作为基准值）。</p>
+<p>一次循环中：从后往前比较（索引<strong>end</strong>），如果比基准值小，则与基准值交换位置；从前往后比较(索引start)，如果比基准值大，则与基准值交换位置。直到 索引<strong>end</strong> 小于 索引 <strong>start</strong>， 一次循环结束，基准值左边都是比基准值小的数据（没有顺序），基准值右边都是比基础值大的数据。</p>
+<p>再依据基准值将左右分成两部分，重复上面操作。</p>
+<h5 id="图解思路："><a href="#图解思路：" class="headerlink" title="图解思路："></a>图解思路：</h5><p>通过示例来了解快速排序。原数组如下：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>72</td>
+<td>6</td>
+<td>57</td>
+<td>88</td>
+<td>60</td>
+</tr>
+</tbody></table>
+<p>基准值key = 72；左边索引start = 0；右边索引end=4;</p>
+<p>一次循环：</p>
+<p>从后往前比较，当 end = 4时，值60小于基准值72，交换位置。如下：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>60</td>
+<td>6</td>
+<td>57</td>
+<td>88</td>
+<td>72</td>
+</tr>
+</tbody></table>
+<p>再从前往后比较，当start = 3时，值88大于基准值72，交换位置。如下：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>60</td>
+<td>6</td>
+<td>57</td>
+<td>72</td>
+<td>88</td>
+</tr>
+</tbody></table>
+<p>从后往前比较，当 end = 3时，start = end，一次循环结束。此时左边数据都是比基准值小的，右边数据都是比基准值大的。</p>
+<p>依据基准值将左右分成两部分。如下：</p>
+<p>左边：<br><img src="https://upload-images.jianshu.io/upload_images/20736176-718ed6644a5d5496.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1578476018111.png"></p>
+<p>右边：<br><img src="https://upload-images.jianshu.io/upload_images/20736176-5e40dea4a144cccc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1578476048564.png"></p>
+<p>重新选择基准值，如左边部分，基准值key = 60，再从后往前比较，从前往后比较，循环操作。</p>
+<h5 id="完整的快速排序代码（java）"><a href="#完整的快速排序代码（java）" class="headerlink" title="完整的快速排序代码（java）"></a>完整的快速排序代码（java）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 快速排序</span><br><span class="line"> *  * 算法思路：</span><br><span class="line"> *  *     1、首先设定一个分界值，通过该分界值将数组分成左右两部分</span><br><span class="line"> *  *     2、将大于分界值的数据集中到数组右边，将小于分界值的数据集中到数组左边</span><br><span class="line"> *  *     3、左边和右边的数据再做独立排序，各取分界值，再分成两部分，以此类推，可以看出这是一个递推操作</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class QuickSort &#123;</span><br><span class="line"></span><br><span class="line"> public static void sort(int[] arr, int left, int right) &#123;</span><br><span class="line"></span><br><span class="line">   int start &#x3D; left;</span><br><span class="line">   int end &#x3D; right;</span><br><span class="line">   int key &#x3D; arr[left];&#x2F;&#x2F;取基准值，一般取第一个</span><br><span class="line"></span><br><span class="line">   while (start &lt; end) &#123;</span><br><span class="line">   &#x2F;&#x2F; 从后往前 找到第一个比基准值小的,并交换位置</span><br><span class="line">   while (arr[end] &gt;&#x3D; key &amp;&amp; start &lt; end) &#123;</span><br><span class="line">     --end;</span><br><span class="line">   &#125;</span><br><span class="line">  if (arr[end] &lt;&#x3D; key) &#123;</span><br><span class="line">     int temp &#x3D; arr[end];</span><br><span class="line">     arr[end] &#x3D; arr[start];</span><br><span class="line">     arr[start] &#x3D; temp;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   &#x2F;&#x2F; 从前往后 找到第一个比基准值大的</span><br><span class="line">   while (arr[start] &lt;&#x3D; key &amp;&amp; start &lt; end) &#123;</span><br><span class="line">     ++start;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   if (arr[start] &gt;&#x3D; key) &#123;</span><br><span class="line">     int temp &#x3D; arr[start];</span><br><span class="line">     arr[start] &#x3D; arr[end];</span><br><span class="line">     arr[end] &#x3D; temp;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#x2F;&#x2F;此时第一次循环比较结束，基准值的位置已经确定了。</span><br><span class="line"> &#x2F;&#x2F;左边的值都比基准值小，右边的值都比基准值大，但是两边的顺序还有可能是不一样的，进行下面的递归调</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F;递归</span><br><span class="line"> if (start &gt; left) &#123;  &#x2F;&#x2F;左边序列。第一个索引位置到关键值索引-1</span><br><span class="line">   sort(arr, left, start - 1);</span><br><span class="line"> &#125;</span><br><span class="line"> if (end &lt; right) &#123; &#x2F;&#x2F;右边序列。从关键值索引+1到最后一个</span><br><span class="line">   sort(arr, end + 1, right);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">     int[] arr &#x3D; &#123;72, 6, 57, 88, 60&#125;;</span><br><span class="line">     sort(arr, 0, arr.length - 1);</span><br><span class="line">     System.out.println(Arrays.toString(arr));</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度："><a href="#复杂度：" class="headerlink" title="复杂度："></a>复杂度：</h5><ul>
+<li><p>最好情况</p>
+<p>在最好的情况下，每次我们进行一次分区，我们会把一个序列刚好分为几近相等的两个子序列，这个情况也我们每次递归调用的是时候也就刚好处理一半大小的子序列。这看起来其实就是一个完全二叉树，树的深度为 O(logn)，所以我们需要做 O(logn) 次嵌套调用。但是在同一层次结构的两个程序调用中，不会处理为原来数列的相同部分。因此，程序调用的每一层次结构总共全部需要 O(n) 的时间。所以这个算法在最好情况下的时间复杂度为 O(nlogn)。</p>
+<p>事实上，我们并不需要如此精确的分区：即使我们每个基准值把元素分开为 99% 在一边和 1% 在另一边。调用的深度仍然限制在 100logn，所以全部运行时间依然是 O(nlogn)。</p>
+</li>
+<li><p>最坏情况</p>
+<p>事实上，我们总不能保证上面的理想情况。试想一下，假设每次分区后都出现子序列的长度一个为 1 一个为 n-1，那真是糟糕透顶。这一定会导致我们的表达式变成：</p>
+<p>这和插入排序和选择排序的关系式真是如出一辙，所以我们的最坏情况是 O(n²)。</p>
+</li>
+</ul>
+<h5 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h5><blockquote>
+<p><a href="https://www.jianshu.com/p/69dc714f407a" target="_blank" rel="noopener">https://www.jianshu.com/p/69dc714f407a</a><br><a href="https://www.jianshu.com/p/442399ef0cf7" target="_blank" rel="noopener">https://www.jianshu.com/p/442399ef0cf7</a></p>
+</blockquote>
+
+          
+        
+      
     </div>
     
-
+    
+    
 
     
 
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightmoonGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" itemprop="url">Algorithms-归并排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-11T18:50:27+08:00">
+                2020-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>年底总是忙碌的时候……..</p>
+<p>作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~</p>
+<p>这篇文章整理一下排序算法——-归并排序</p>
+<h5 id="基本思想："><a href="#基本思想：" class="headerlink" title="基本思想："></a>基本思想：</h5><p>归并排序的主要思想是分治法。主要过程是：</p>
+<ol>
+<li><p>将n个元素从中间切开，分成两部分。（左边可能比右边多1个数）</p>
+</li>
+<li><p>将步骤1分成的两部分，再分别进行递归分解。直到所有部分的元素个数都为1。</p>
+</li>
+<li><p>从最底层开始逐步合并两个排好序的数列。</p>
+</li>
+</ol>
+<h5 id="核心思路："><a href="#核心思路：" class="headerlink" title="核心思路："></a>核心思路：</h5><p>如何将两个有序数列合并成一个有序数列？</p>
+<p>由于两个数列都已经有序，我们只需从两个数列的低位轮番拿出各自最小的数来PK就就行了，输的一方为小值，将这个值放入临时数列，然后输的一方继续拿出一个值来PK，直至有一方没有元素后，将另一方的所有元素依次接在临时数列后面即可。此时，临时数列为两个数列的有序合并。归并排序中的归并就是利用这种思想。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 合并</span><br><span class="line"> *&#x2F;</span><br><span class="line">public static void merge(int[] arr, int l, int mid, int r) &#123;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F;定义一个临时数组存放合并的数据</span><br><span class="line"> int[] temp &#x3D; new int[r - l + 1];</span><br><span class="line"> int i &#x3D; 0; &#x2F;&#x2F;temp数组的索引</span><br><span class="line"> &#x2F;&#x2F;定义两个指针分别代表左边和右边的索引</span><br><span class="line"> int p1 &#x3D; l, p2 &#x3D; mid + 1;</span><br><span class="line"> while (p1 &lt;&#x3D; mid &amp;&amp; p2 &lt;&#x3D; r) &#123;</span><br><span class="line">   &#x2F;&#x2F; 比较左右两部分的元素，哪个小，把那个元素填入temp中</span><br><span class="line">   temp[i++] &#x3D; arr[p1] &lt; arr[p2] ? arr[p1++] : arr[p2++];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F;上面循环结束后，将剩余的数据放入temp中</span><br><span class="line"> while (p1 &lt;&#x3D; mid) &#123;</span><br><span class="line">   temp[i++] &#x3D; arr[p1++];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> while (p2 &lt;&#x3D; r) &#123;</span><br><span class="line">   temp[i++] &#x3D; arr[p2++];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F; 把最终的排序的结果复制给原数组</span><br><span class="line"> for (i &#x3D; 0; i &lt; temp.length; i++) &#123;</span><br><span class="line">   arr[l + i] &#x3D; temp[i];</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="图解思路："><a href="#图解思路：" class="headerlink" title="图解思路："></a>图解思路：</h5><p>通过示例图了解归并排序的思路。原数组如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-3a265127bd725b22.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="img"></p>
+<h6 id="第一步：分解"><a href="#第一步：分解" class="headerlink" title="第一步：分解"></a>第一步：分解</h6><p>首先将数组分解成两部分，即19、15、37为一组，12、25为一组，为了区分，我们起个名字叫“第一层”，如下图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-d525fd535e9f778a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="preview"> </p>
+<h6 id="第二步：分解"><a href="#第二步：分解" class="headerlink" title="第二步：分解"></a>第二步：分解</h6><p>继续分解，19、15为一组，37为一组，12为一组，25为一组，这四组为“第二层”，如下图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-6d9c3e60283be706.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<h6 id="第三步：分解"><a href="#第三步：分解" class="headerlink" title="第三步：分解"></a>第三步：分解</h6><p>继续分解，此时只剩下19、15这一组可以分解，分解成19、15，这两组为“第三层”，如下图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-d71bbfb0b84a0164.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<h6 id="第四步：归并"><a href="#第四步：归并" class="headerlink" title="第四步：归并"></a>第四步：归并</h6><p>由于所有组都已经分解成只有1个元素，开始进行归并，从“高层”开始归并，即先归并“第三层”，比较“第三层”两组元素，19 &lt; 15，因此将15排在19前面，由于已经没有元素，结束此次归并，如下图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-08a33cd95a19ea36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="img"> </p>
+<h6 id="第五步：归并"><a href="#第五步：归并" class="headerlink" title="第五步：归并"></a>第五步：归并</h6><p>继续归并，此次归并“第二层”，这一层有4个组，进行两两比较。首先，比较15、19和37：15 &lt; 37，所以15放第一个位置，接着比较19和37，19 &lt; 37，所以19放第二个位置，此时第一组15、19已经没有元素，于是将37填入15和19之后。接着比较：12和25：12 &lt; 25，所以12放第一个位置，由于第一组12已经没有元素，于是将25填入12之后。归并的结果如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-17969e5ddfea882d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="img"> </p>
+<h6 id="第六步：归并"><a href="#第六步：归并" class="headerlink" title="第六步：归并"></a>第六步：归并</h6><p>继续归并，此次归并“第一层”，这一组有2个组，第一组：15、19、37，第二组：12、25。同样的，取两组的第1个数比较：15 &gt; 12，所以12放第1个位置；接着取第二组的第2个数比较：15 &lt; 25，所以15放第2个位置；接着取第一组的第2个数比较：19 &lt; 25，所以19放第3个位置；接着取第一组的第3个数比较：37 &gt; 25，所以25放第4个位置；由于第二组已经没有元素，所以37自然归入第5个位置。此时，归并结束，最终数组如下。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/20736176-b7a1fdaa9b4fbeaf.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<h5 id="完整示例步骤如下图："><a href="#完整示例步骤如下图：" class="headerlink" title="完整示例步骤如下图："></a>完整示例步骤如下图：</h5><p><img src="https://upload-images.jianshu.io/upload_images/20736176-bae3e5a916fbfc89.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<h5 id="完整的归并排序代码（java）"><a href="#完整的归并排序代码（java）" class="headerlink" title="完整的归并排序代码（java）"></a>完整的归并排序代码（java）</h5><p>先分解，再递归调用归并方法，最后调用合并方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 归并排序</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class MergeSort &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#x2F;**</span><br><span class="line"> * 归并排序</span><br><span class="line"> *&#x2F;</span><br><span class="line"> public static void mergeSort(int[] arr) &#123;</span><br><span class="line">   sort(arr, 0, arr.length - 1);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#x2F;**</span><br><span class="line"> * 分治、递归做排序处理</span><br><span class="line"> *&#x2F;</span><br><span class="line"> public static void sort(int[] arr, int l, int r) &#123;</span><br><span class="line">   if (l &#x3D;&#x3D; r) &#123;</span><br><span class="line">     return;</span><br><span class="line">   &#125;</span><br><span class="line">   int mid &#x3D; l + ((r - l) &gt;&gt; 1);&#x2F;&#x2F;分两部分</span><br><span class="line">   sort(arr, l, mid);&#x2F;&#x2F;对左边数组处理</span><br><span class="line">   sort(arr, mid + 1, r);&#x2F;&#x2F;对右边数组处理</span><br><span class="line">   merge(arr, l, mid, r); &#x2F;&#x2F;合并</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#x2F;**</span><br><span class="line"> * 合并</span><br><span class="line"> *&#x2F;</span><br><span class="line"> public static void merge(int[] arr, int l, int mid, int r) &#123;</span><br><span class="line"></span><br><span class="line">   &#x2F;&#x2F;定义一个临时数组存放合并的数据</span><br><span class="line">   int[] temp &#x3D; new int[r - l + 1];</span><br><span class="line">   int i &#x3D; 0; &#x2F;&#x2F;temp数组的索引</span><br><span class="line">   &#x2F;&#x2F;定义两个指针分别代表左边和右边的索引</span><br><span class="line">   int p1 &#x3D; l, p2 &#x3D; mid + 1;</span><br><span class="line">   while (p1 &lt;&#x3D; mid &amp;&amp; p2 &lt;&#x3D; r) &#123;</span><br><span class="line">     &#x2F;&#x2F; 比较左右两部分的元素，哪个小，把那个元素填入temp中</span><br><span class="line">     temp[i++] &#x3D; arr[p1] &lt; arr[p2] ? arr[p1++] : arr[p2++];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   &#x2F;&#x2F;上面循环结束后，将剩余的数据放入temp中</span><br><span class="line">   while (p1 &lt;&#x3D; mid) &#123;</span><br><span class="line">     temp[i++] &#x3D; arr[p1++];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   while (p2 &lt;&#x3D; r) &#123;</span><br><span class="line">     temp[i++] &#x3D; arr[p2++];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   &#x2F;&#x2F; 把最终的排序的结果复制给原数组</span><br><span class="line">   for (i &#x3D; 0; i &lt; temp.length; i++) &#123;</span><br><span class="line">     arr[l + i] &#x3D; temp[i];</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">   int[] arr &#x3D; &#123;31, 21, 10,  43, 22, 34, 26, 9, 11&#125;;</span><br><span class="line">   mergeSort(arr);</span><br><span class="line">   System.out.println(Arrays.toString(arr));</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度："><a href="#复杂度：" class="headerlink" title="复杂度："></a>复杂度：</h5><p><strong>时间复杂度：O(nlogn)</strong></p>
+<p><strong>空间复杂度：O(N)</strong>，归并排序需要一个与原数组相同长度的数组做辅助来排序</p>
+<p>稳定性：归并排序是稳定的排序算法，<code>temp[i++] = arr[p1] &lt;= arr[p2] ? arr[p1++] : arr[p2++];</code>这行代码可以保证当左右两部分的值相等的时候，先复制左边的值，这样可以保证值相等的时候两个元素的相对位置不变。</p>
+<p>参考文献</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/36075856" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/36075856</a><br><a href="https://www.jianshu.com/p/33cffa1ce613" target="_blank" rel="noopener">https://www.jianshu.com/p/33cffa1ce613</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">nightmoonGu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">nightmoonGu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
 
 
 
   
-    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
   
 
   
 
-    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
-<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+  
 
-  </body>
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
 </html>
