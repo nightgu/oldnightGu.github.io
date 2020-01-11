@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Algorithms-快速排序 - 无处安放的灵魂</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="年底总是忙碌的时候……..
+作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~
+这篇文章整理排序算法—-快速排序
+快速排序（时间复,"> 
+    <meta name="author" content="nightmoonGu"> 
+    <link rel="alternative" href="atom.xml" title="无处安放的灵魂" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">无处安放的灵魂</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="http://yoursite.com"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">Algorithms-快速排序</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Algorithms-快速排序</h1>
+        <div class="stuff">
+            <span>一月 11, 2020</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>年底总是忙碌的时候……..</p>
+<p>作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~</p>
+<p>这篇文章整理排序算法—-快速排序</p>
+<p>快速排序（时间复杂度O(nlogn)）作为排序算法中的佼佼者，同样采用分治的思想。</p>
+<h5 id="基本思想："><a href="#基本思想：" class="headerlink" title="基本思想："></a>基本思想：</h5><p>快速排序的主要思想是分治法。主要思路：</p>
+<p>1、首先设定一个基准值，通过该基准值值将数组分成左右两部分</p>
+<p>2、将大于基准值的数据集中到数组右边，将小于基准值的数据集中到数组左边</p>
+<p>3、左边和右边的数据再做独立排序，各取基准值，再分成两部分，以此类推，可以看出这是一个递推操作。</p>
+<h5 id="核心思路："><a href="#核心思路：" class="headerlink" title="核心思路："></a>核心思路：</h5><p>选一个基准值（一般选择第一个作为基准值）。</p>
+<p>一次循环中：从后往前比较（索引<strong>end</strong>），如果比基准值小，则与基准值交换位置；从前往后比较(索引start)，如果比基准值大，则与基准值交换位置。直到 索引<strong>end</strong> 小于 索引 <strong>start</strong>， 一次循环结束，基准值左边都是比基准值小的数据（没有顺序），基准值右边都是比基础值大的数据。</p>
+<p>再依据基准值将左右分成两部分，重复上面操作。</p>
+<h5 id="图解思路："><a href="#图解思路：" class="headerlink" title="图解思路："></a>图解思路：</h5><p>通过示例来了解快速排序。原数组如下：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>72</td>
+<td>6</td>
+<td>57</td>
+<td>88</td>
+<td>60</td>
+</tr>
+</tbody></table>
+<p>基准值key = 72；左边索引start = 0；右边索引end=4;</p>
+<p>一次循环：</p>
+<p>从后往前比较，当 end = 4时，值60小于基准值72，交换位置。如下：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>60</td>
+<td>6</td>
+<td>57</td>
+<td>88</td>
+<td>72</td>
+</tr>
+</tbody></table>
+<p>再从前往后比较，当start = 3时，值88大于基准值72，交换位置。如下：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>60</td>
+<td>6</td>
+<td>57</td>
+<td>72</td>
+<td>88</td>
+</tr>
+</tbody></table>
+<p>从后往前比较，当 end = 3时，start = end，一次循环结束。此时左边数据都是比基准值小的，右边数据都是比基准值大的。</p>
+<p>依据基准值将左右分成两部分。如下：</p>
+<p>左边：<br><img src="https://upload-images.jianshu.io/upload_images/20736176-718ed6644a5d5496.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1578476018111.png"></p>
+<p>右边：<br><img src="https://upload-images.jianshu.io/upload_images/20736176-5e40dea4a144cccc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1578476048564.png"></p>
+<p>重新选择基准值，如左边部分，基准值key = 60，再从后往前比较，从前往后比较，循环操作。</p>
+<h5 id="完整的快速排序代码（java）"><a href="#完整的快速排序代码（java）" class="headerlink" title="完整的快速排序代码（java）"></a>完整的快速排序代码（java）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 快速排序</span><br><span class="line"> *  * 算法思路：</span><br><span class="line"> *  *     1、首先设定一个分界值，通过该分界值将数组分成左右两部分</span><br><span class="line"> *  *     2、将大于分界值的数据集中到数组右边，将小于分界值的数据集中到数组左边</span><br><span class="line"> *  *     3、左边和右边的数据再做独立排序，各取分界值，再分成两部分，以此类推，可以看出这是一个递推操作</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class QuickSort &#123;</span><br><span class="line"></span><br><span class="line"> public static void sort(int[] arr, int left, int right) &#123;</span><br><span class="line"></span><br><span class="line">   int start &#x3D; left;</span><br><span class="line">   int end &#x3D; right;</span><br><span class="line">   int key &#x3D; arr[left];&#x2F;&#x2F;取基准值，一般取第一个</span><br><span class="line"></span><br><span class="line">   while (start &lt; end) &#123;</span><br><span class="line">   &#x2F;&#x2F; 从后往前 找到第一个比基准值小的,并交换位置</span><br><span class="line">   while (arr[end] &gt;&#x3D; key &amp;&amp; start &lt; end) &#123;</span><br><span class="line">     --end;</span><br><span class="line">   &#125;</span><br><span class="line">  if (arr[end] &lt;&#x3D; key) &#123;</span><br><span class="line">     int temp &#x3D; arr[end];</span><br><span class="line">     arr[end] &#x3D; arr[start];</span><br><span class="line">     arr[start] &#x3D; temp;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   &#x2F;&#x2F; 从前往后 找到第一个比基准值大的</span><br><span class="line">   while (arr[start] &lt;&#x3D; key &amp;&amp; start &lt; end) &#123;</span><br><span class="line">     ++start;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   if (arr[start] &gt;&#x3D; key) &#123;</span><br><span class="line">     int temp &#x3D; arr[start];</span><br><span class="line">     arr[start] &#x3D; arr[end];</span><br><span class="line">     arr[end] &#x3D; temp;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#x2F;&#x2F;此时第一次循环比较结束，基准值的位置已经确定了。</span><br><span class="line"> &#x2F;&#x2F;左边的值都比基准值小，右边的值都比基准值大，但是两边的顺序还有可能是不一样的，进行下面的递归调</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F;递归</span><br><span class="line"> if (start &gt; left) &#123;  &#x2F;&#x2F;左边序列。第一个索引位置到关键值索引-1</span><br><span class="line">   sort(arr, left, start - 1);</span><br><span class="line"> &#125;</span><br><span class="line"> if (end &lt; right) &#123; &#x2F;&#x2F;右边序列。从关键值索引+1到最后一个</span><br><span class="line">   sort(arr, end + 1, right);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">     int[] arr &#x3D; &#123;72, 6, 57, 88, 60&#125;;</span><br><span class="line">     sort(arr, 0, arr.length - 1);</span><br><span class="line">     System.out.println(Arrays.toString(arr));</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度："><a href="#复杂度：" class="headerlink" title="复杂度："></a>复杂度：</h5><ul>
+<li><p>最好情况</p>
+<p>在最好的情况下，每次我们进行一次分区，我们会把一个序列刚好分为几近相等的两个子序列，这个情况也我们每次递归调用的是时候也就刚好处理一半大小的子序列。这看起来其实就是一个完全二叉树，树的深度为 O(logn)，所以我们需要做 O(logn) 次嵌套调用。但是在同一层次结构的两个程序调用中，不会处理为原来数列的相同部分。因此，程序调用的每一层次结构总共全部需要 O(n) 的时间。所以这个算法在最好情况下的时间复杂度为 O(nlogn)。</p>
+<p>事实上，我们并不需要如此精确的分区：即使我们每个基准值把元素分开为 99% 在一边和 1% 在另一边。调用的深度仍然限制在 100logn，所以全部运行时间依然是 O(nlogn)。</p>
+</li>
+<li><p>最坏情况</p>
+<p>事实上，我们总不能保证上面的理想情况。试想一下，假设每次分区后都出现子序列的长度一个为 1 一个为 n-1，那真是糟糕透顶。这一定会导致我们的表达式变成：</p>
+<p>这和插入排序和选择排序的关系式真是如出一辙，所以我们的最坏情况是 O(n²)。</p>
+</li>
+</ul>
+<h5 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h5><blockquote>
+<p><a href="https://www.jianshu.com/p/69dc714f407a" target="_blank" rel="noopener">https://www.jianshu.com/p/69dc714f407a</a><br><a href="https://www.jianshu.com/p/442399ef0cf7" target="_blank" rel="noopener">https://www.jianshu.com/p/442399ef0cf7</a></p>
+</blockquote>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
