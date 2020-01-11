@@ -86,19 +86,19 @@
 <meta property="og:site_name" content="无处安放的灵魂">
 <meta property="og:description" content="年底总是忙碌的时候…….. 作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~ 这篇文章整理一下排序算法——-归并排序">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-3a265127bd725b22.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-d525fd535e9f778a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-6d9c3e60283be706.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-d71bbfb0b84a0164.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-08a33cd95a19ea36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-17969e5ddfea882d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-b7a1fdaa9b4fbeaf.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-bae3e5a916fbfc89.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge8.png">
 <meta property="article:published_time" content="2020-01-11T10:50:27.843Z">
-<meta property="article:modified_time" content="2020-01-11T12:17:03.636Z">
+<meta property="article:modified_time" content="2020-01-11T13:24:30.408Z">
 <meta property="article:author" content="nightGu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/20736176-3a265127bd725b22.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/pg/merge1.png">
 
 
 
@@ -330,22 +330,22 @@
 <!-- more -->
 
 <h5 id="图解思路"><a href="#图解思路" class="headerlink" title="图解思路"></a>图解思路</h5><p>通过示例图了解归并排序的思路。原数组如下：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-3a265127bd725b22.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="img"></p>
+<p><img src="pg/merge1.png" alt="img"></p>
 <h6 id="第一步：分解"><a href="#第一步：分解" class="headerlink" title="第一步：分解"></a>第一步：分解</h6><p>首先将数组分解成两部分，即19、15、37为一组，12、25为一组，为了区分，我们起个名字叫“第一层”，如下图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-d525fd535e9f778a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="preview"> </p>
+<p><img src="pg/merge2.png" alt="preview"> </p>
 <h6 id="第二步：分解"><a href="#第二步：分解" class="headerlink" title="第二步：分解"></a>第二步：分解</h6><p>继续分解，19、15为一组，37为一组，12为一组，25为一组，这四组为“第二层”，如下图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-6d9c3e60283be706.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<p><img src="pg/merge3.png" alt="image"> </p>
 <h6 id="第三步：分解"><a href="#第三步：分解" class="headerlink" title="第三步：分解"></a>第三步：分解</h6><p>继续分解，此时只剩下19、15这一组可以分解，分解成19、15，这两组为“第三层”，如下图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-d71bbfb0b84a0164.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<p><img src="pg/merge4.png" alt="image"> </p>
 <h6 id="第四步：归并"><a href="#第四步：归并" class="headerlink" title="第四步：归并"></a>第四步：归并</h6><p>由于所有组都已经分解成只有1个元素，开始进行归并，从“高层”开始归并，即先归并“第三层”，比较“第三层”两组元素，19 &lt; 15，因此将15排在19前面，由于已经没有元素，结束此次归并，如下图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-08a33cd95a19ea36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="img"> </p>
+<p><img src="pg/merge5.png" alt="img"> </p>
 <h6 id="第五步：归并"><a href="#第五步：归并" class="headerlink" title="第五步：归并"></a>第五步：归并</h6><p>继续归并，此次归并“第二层”，这一层有4个组，进行两两比较。首先，比较15、19和37：15 &lt; 37，所以15放第一个位置，接着比较19和37，19 &lt; 37，所以19放第二个位置，此时第一组15、19已经没有元素，于是将37填入15和19之后。接着比较：12和25：12 &lt; 25，所以12放第一个位置，由于第一组12已经没有元素，于是将25填入12之后。归并的结果如下：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-17969e5ddfea882d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="img"> </p>
+<p><img src="pg/merge6.png" alt="img"> </p>
 <h6 id="第六步：归并"><a href="#第六步：归并" class="headerlink" title="第六步：归并"></a>第六步：归并</h6><p>继续归并，此次归并“第一层”，这一组有2个组，第一组：15、19、37，第二组：12、25。同样的，取两组的第1个数比较：15 &gt; 12，所以12放第1个位置；接着取第二组的第2个数比较：15 &lt; 25，所以15放第2个位置；接着取第一组的第2个数比较：19 &lt; 25，所以19放第3个位置；接着取第一组的第3个数比较：37 &gt; 25，所以25放第4个位置；由于第二组已经没有元素，所以37自然归入第5个位置。此时，归并结束，最终数组如下。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/20736176-b7a1fdaa9b4fbeaf.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<p><img src="pg/merge7.png" alt="image"> </p>
 <!-- more -->
 
-<h5 id="完整示例步骤如下图"><a href="#完整示例步骤如下图" class="headerlink" title="完整示例步骤如下图"></a>完整示例步骤如下图</h5><p><img src="https://upload-images.jianshu.io/upload_images/20736176-bae3e5a916fbfc89.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<h5 id="完整示例步骤如下图"><a href="#完整示例步骤如下图" class="headerlink" title="完整示例步骤如下图"></a>完整示例步骤如下图</h5><p><img src="pg/merge8.png" alt="image"> </p>
 <!-- more -->
 
 <h5 id="完整的归并排序代码（java）"><a href="#完整的归并排序代码（java）" class="headerlink" title="完整的归并排序代码（java）"></a>完整的归并排序代码（java）</h5><p>先分解，再递归调用归并方法，最后调用合并方法。</p>
