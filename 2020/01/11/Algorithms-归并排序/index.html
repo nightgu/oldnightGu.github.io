@@ -86,19 +86,19 @@
 <meta property="og:site_name" content="无处安放的灵魂">
 <meta property="og:description" content="年底总是忙碌的时候…….. 作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~ 这篇文章整理一下排序算法——-归并排序">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205800-03c89c00-34c2-11ea-902e-da3070fdee27.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205814-34103a80-34c2-11ea-9e5a-bfa78a0c6dba.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205827-573aea00-34c2-11ea-8e24-5a8db03f33a4.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205831-615ce880-34c2-11ea-8cd3-08d8a46ff520.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205835-67eb6000-34c2-11ea-88a3-7cff062061ba.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205836-6883f680-34c2-11ea-8e26-fd42dee0f04e.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205837-6883f680-34c2-11ea-913e-6a4e7db04e38.png">
-<meta property="og:image" content="https://user-images.githubusercontent.com/23189976/72205838-69b52380-34c2-11ea-874e-dcc327569b56.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge1.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge2.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge3.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge4.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge5.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge6.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge7.png">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge8.png">
 <meta property="article:published_time" content="2020-01-11T10:50:27.843Z">
-<meta property="article:modified_time" content="2020-01-11T14:31:39.191Z">
+<meta property="article:modified_time" content="2020-01-11T15:10:36.902Z">
 <meta property="article:author" content="nightGu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://user-images.githubusercontent.com/23189976/72205800-03c89c00-34c2-11ea-902e-da3070fdee27.png">
+<meta name="twitter:image" content="https://github.com/nightGu/blogImg/raw/master/pg/merge1.png">
 
 
 
@@ -330,22 +330,22 @@
 <!-- more -->
 
 <h5 id="图解思路"><a href="#图解思路" class="headerlink" title="图解思路"></a>图解思路</h5><p>通过示例图了解归并排序的思路。原数组如下：</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205800-03c89c00-34c2-11ea-902e-da3070fdee27.png" alt="merge1"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge1.png" alt="img"></p>
 <h6 id="第一步：分解"><a href="#第一步：分解" class="headerlink" title="第一步：分解"></a>第一步：分解</h6><p>首先将数组分解成两部分，即19、15、37为一组，12、25为一组，为了区分，我们起个名字叫“第一层”，如下图：</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205814-34103a80-34c2-11ea-9e5a-bfa78a0c6dba.png" alt="merge2"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge2.png" alt="img"></p>
 <h6 id="第二步：分解"><a href="#第二步：分解" class="headerlink" title="第二步：分解"></a>第二步：分解</h6><p>继续分解，19、15为一组，37为一组，12为一组，25为一组，这四组为“第二层”，如下图：</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205827-573aea00-34c2-11ea-8e24-5a8db03f33a4.png" alt="merge3"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge3.png" alt="img"></p>
 <h6 id="第三步：分解"><a href="#第三步：分解" class="headerlink" title="第三步：分解"></a>第三步：分解</h6><p>继续分解，此时只剩下19、15这一组可以分解，分解成19、15，这两组为“第三层”，如下图：</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205831-615ce880-34c2-11ea-8cd3-08d8a46ff520.png" alt="merge4"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge4.png" alt="img"></p>
 <h6 id="第四步：归并"><a href="#第四步：归并" class="headerlink" title="第四步：归并"></a>第四步：归并</h6><p>由于所有组都已经分解成只有1个元素，开始进行归并，从“高层”开始归并，即先归并“第三层”，比较“第三层”两组元素，19 &lt; 15，因此将15排在19前面，由于已经没有元素，结束此次归并，如下图：</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205835-67eb6000-34c2-11ea-88a3-7cff062061ba.png" alt="merge5"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge5.png" alt="img"></p>
 <h6 id="第五步：归并"><a href="#第五步：归并" class="headerlink" title="第五步：归并"></a>第五步：归并</h6><p>继续归并，此次归并“第二层”，这一层有4个组，进行两两比较。首先，比较15、19和37：15 &lt; 37，所以15放第一个位置，接着比较19和37，19 &lt; 37，所以19放第二个位置，此时第一组15、19已经没有元素，于是将37填入15和19之后。接着比较：12和25：12 &lt; 25，所以12放第一个位置，由于第一组12已经没有元素，于是将25填入12之后。归并的结果如下：</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205836-6883f680-34c2-11ea-8e26-fd42dee0f04e.png" alt="merge6"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge6.png" alt="img"></p>
 <h6 id="第六步：归并"><a href="#第六步：归并" class="headerlink" title="第六步：归并"></a>第六步：归并</h6><p>继续归并，此次归并“第一层”，这一组有2个组，第一组：15、19、37，第二组：12、25。同样的，取两组的第1个数比较：15 &gt; 12，所以12放第1个位置；接着取第二组的第2个数比较：15 &lt; 25，所以15放第2个位置；接着取第一组的第2个数比较：19 &lt; 25，所以19放第3个位置；接着取第一组的第3个数比较：37 &gt; 25，所以25放第4个位置；由于第二组已经没有元素，所以37自然归入第5个位置。此时，归并结束，最终数组如下。</p>
-<p><img src="https://user-images.githubusercontent.com/23189976/72205837-6883f680-34c2-11ea-913e-6a4e7db04e38.png" alt="merge7"></p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge7.png" alt="img"></p>
 <!-- more -->
 
-<h5 id="完整示例步骤如下图"><a href="#完整示例步骤如下图" class="headerlink" title="完整示例步骤如下图"></a>完整示例步骤如下图</h5><p><img src="https://user-images.githubusercontent.com/23189976/72205838-69b52380-34c2-11ea-874e-dcc327569b56.png" alt="merge8"></p>
+<h5 id="完整示例步骤如下图"><a href="#完整示例步骤如下图" class="headerlink" title="完整示例步骤如下图"></a>完整示例步骤如下图</h5><p><img src="https://github.com/nightGu/blogImg/raw/master/pg/merge8.png" alt="img"></p>
 <!-- more -->
 
 <h5 id="完整的归并排序代码（java）"><a href="#完整的归并排序代码（java）" class="headerlink" title="完整的归并排序代码（java）"></a>完整的归并排序代码（java）</h5><p>先分解，再递归调用归并方法，最后调用合并方法。</p>
