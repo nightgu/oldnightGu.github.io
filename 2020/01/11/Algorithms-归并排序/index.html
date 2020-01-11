@@ -1,100 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
+<html lang="zh-cn">
+  <head>
     
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>
-    Algorithms-归并排序 |  无处安放的灵魂
-  </title>
-  <meta name="generator" content="hexo-theme-yilia-plus">
-  
-  <link rel="shortcut icon" href="/favicon.ico" />
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Algorithms-归并排序"/>
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="无处安放的灵魂">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2020/01/11/Algorithms-归并排序/"/>
+
+
+<meta name="description" content="年底总是忙碌的时候…….. 作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~ 这篇文章整理一下排序算法——-归并排序 基本思想：归并排序的主要思想是分治法。主要过程是：  将n个元素从中间切开，分成两部分。（左边可能比右边多1个数）  将步骤1分成的两部分，再分别进行递归分解。直到所有部分的元素个数都为1。  从最底层开始逐步合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithms-归并排序">
+<meta property="og:url" content="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="无处安放的灵魂">
+<meta property="og:description" content="年底总是忙碌的时候…….. 作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~ 这篇文章整理一下排序算法——-归并排序 基本思想：归并排序的主要思想是分治法。主要过程是：  将n个元素从中间切开，分成两部分。（左边可能比右边多1个数）  将步骤1分成的两部分，再分别进行递归分解。直到所有部分的元素个数都为1。  从最底层开始逐步合">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-3a265127bd725b22.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-d525fd535e9f778a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-6d9c3e60283be706.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-d71bbfb0b84a0164.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-08a33cd95a19ea36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-17969e5ddfea882d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-b7a1fdaa9b4fbeaf.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/20736176-bae3e5a916fbfc89.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2020-01-11T10:50:27.843Z">
+<meta property="article:modified_time" content="2020-01-11T10:50:31.491Z">
+<meta property="article:author" content="nightmoonGu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/20736176-3a265127bd725b22.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
 
   
-<script src="/js/pace.min.js"></script>
 
 
-  
 
-  
+    <title> Algorithms-归并排序 - 无处安放的灵魂 </title>
+  <meta name="generator" content="Hexo 4.2.0"></head>
 
-</head>
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">无处安放的灵魂</a>
+    </h1>
 
-</html>
-
-<body>
-  <div id="app">
-    <main class="content">
-      <section class="outer">
-  <article id="post-Algorithms-归并排序" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Algorithms-归并排序
-</h1>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time datetime="2020-01-11T10:50:27.843Z" itemprop="datePublished">2020-01-11</time>
-</a>
-      
-      
-      
-<div class="word_count">
-    <span class="post-time">
-        <span class="post-meta-item-icon">
-            <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.6k字</span>
-        </span>
-    </span>
-
-    <span class="post-time">
-        &nbsp; | &nbsp;
-        <span class="post-meta-item-icon">
-            <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">6分钟</span>
-        </span>
-    </span>
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
 </div>
 
-      
-    </div>
-    
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Algorithms-归并排序
+        
+      </h1>
+
+      <time class="post-time">
+          1月 11 2020
+      </time>
+    </header>
+
+
 
     
-    
-    <div class="tocbot"></div>
-
-
-
-
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <p>年底总是忙碌的时候……..</p>
+            <div class="post-content">
+            <p>年底总是忙碌的时候……..</p>
 <p>作为一个极少刷算法的java开发，突然刷算法题很吃力，算法里常用到的思想基本不了解，比如分治、动态规划、贪心等。泪崩~</p>
 <p>这篇文章整理一下排序算法——-归并排序</p>
 <h5 id="基本思想："><a href="#基本思想：" class="headerlink" title="基本思想："></a>基本思想：</h5><p>归并排序的主要思想是分治法。主要过程是：</p>
@@ -136,274 +178,75 @@
 <p><a href="https://zhuanlan.zhihu.com/p/36075856" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/36075856</a><br><a href="https://www.jianshu.com/p/33cffa1ce613" target="_blank" rel="noopener">https://www.jianshu.com/p/33cffa1ce613</a></p>
 </blockquote>
 
-      
-      <!-- 打赏 -->
-      
-      <div id="reward-btn">
-        打赏
-      </div>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/11/Algorithms-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" data-id="ck59h9hiq0000fctvgl8d890x"
-        class="article-share-link">分享</a>
-      
-    </footer>
+            </div>
+          
 
-  </div>
-
-  
-  
-  <nav class="article-nav">
     
-      <a href="/2020/01/11/Algorithms-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Algorithms-快速排序
-          
-        </div>
+      <footer class="post-footer">
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2020/01/11/Algorithms-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Algorithms-快速排序</span>
+        <span class="prev-text nav-mobile">上一篇</span>
       </a>
     
     
   </nav>
 
-
-  
-
-  
-  
-<!-- valine评论 -->
-<div id="vcomments-box">
-    <div id="vcomments">
-    </div>
-</div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
-<script>
-    new Valine({
-        el: '#vcomments',
-        notify: false,
-        verify: false,
-        app_id: '',
-        app_key: '',
-        path: window.location.pathname,
-        avatar: 'mp',
-        placeholder: '给我的文章加点评论吧~',
-        recordIP: true
-    });
-    const infoEle = document.querySelector('#vcomments .info');
-    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
-        infoEle.childNodes.forEach(function (item) {
-            item.parentNode.removeChild(item);
-        });
-    }
-</script>
-<style>
-    #vcomments-box {
-        padding: 5px 30px;
-    }
-
-    @media screen and (max-width: 800px) {
-        #vcomments-box {
-            padding: 5px 0px;
-        }
-    }
-
-    #vcomments-box #vcomments {
-        background-color: #fff;
-    }
-
-    .v .vlist .vcard .vh {
-        padding-right: 20px;
-    }
-
-    .v .vlist .vcard {
-        padding-left: 10px;
-    }
-</style>
-
-  
-
-  
-  
-  
-
-</article>
-</section>
-      <footer class="footer">
-  <div class="outer">
-    <ul class="list-inline">
-      <li>
-        &copy;
-        2015-2020
-        nightmoonGu
-      </li>
-      <li>
         
-          Powered by
-        
-        
-        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
-        
-      </li>
-    </ul>
-    <ul class="list-inline">
-      <li>
-        
-        
-        <ul class="list-inline">
-  <li>PV:<span id="busuanzi_value_page_pv"></span></li>
-  <li>UV:<span id="busuanzi_value_site_uv"></span></li>
-</ul>
-        
-      </li>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
-        
-      </li>
-    </ul>
+  <div class="comments" id="comments">
+    
   </div>
-</footer>
-    <div class="to_top">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
       </div>
-    </main>
-    
-    <aside class="sidebar">
-      
-        <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="无处安放的灵魂"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">目录</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/2020/about">关于我</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="搜索">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="ri-rss-line"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-      </aside>
-      <div id="mask"></div>
 
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
+      <footer id="colophon"><span class="copyright-year">
     
-    <div class="reward-item">
-      <img class="reward-img" src="/images/alipay.jpg">
-      <span class="reward-type">支付宝</span>
+        &copy;
+    
+        2014 -
+    
+    2020
+    <span class="footer-author">nightmoonGu.</span>
+    <span class="power-by">
+        由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a> 强力驱动
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
     </div>
     
+
+
     
-    <div class="reward-item">
-      <img class="reward-img" src="/images/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
-    
-  </div>
-</div>
-      
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
 
 
   
-<script src="/js/tocbot.min.js"></script>
-
-  <script>
-    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
-    tocbot.init({
-      tocSelector: '.tocbot',
-      contentSelector: '.article-entry',
-      headingSelector: 'h1, h2, h3, h4, h5, h6',
-      hasInnerContainers: true,
-      scrollSmooth: true,
-      positionFixedSelector: '.tocbot',
-      positionFixedClass: 'is-position-fixed',
-      fixedSidebarOffset: 'auto',
-			onClick: (e) => {
-      	document.getElementById(e.target.innerText).scrollIntoView()
-      	return false;
-    	}
-    });
-  </script>
-
-
-<script>
-  var ayerConfig = {
-    mathjax: false
-  }
-</script>
-
-
-<script src="/js/ayer.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
-
-
-
-<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
-  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
   
 
-  </div>
-</body>
+  
 
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
 </html>
