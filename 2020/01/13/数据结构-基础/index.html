@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-cn">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基础决定高度。一年任劳任怨的工作，最终得不到领导的认可。是自己能力有问题？还是自己不喜讨好领导？唉~好好努力吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-基础">
+<meta property="og:url" content="http://yoursite.com/2020/01/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="无处安放的灵魂">
+<meta property="og:description" content="基础决定高度。一年任劳任怨的工作，最终得不到领导的认可。是自己能力有问题？还是自己不喜讨好领导？唉~好好努力吧！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/base1.jpg">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/base2.jpg">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/base3.jpg">
+<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/base4.jpg">
+<meta property="article:published_time" content="2020-01-13T02:51:28.827Z">
+<meta property="article:modified_time" content="2020-01-13T11:21:20.832Z">
+<meta property="article:author" content="nightGu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/nightGu/blogImg/raw/master/pg/base1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/13/数据结构-基础/"/>
+
+
+
+
+
+  <title>数据结构-基础 | 无处安放的灵魂</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无处安放的灵魂</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">乘风破浪会有时，直挂云帆济沧海</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据结构-基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-13T10:51:28+08:00">
+                2020-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>基础决定高度。一年任劳任怨的工作，最终得不到领导的认可。是自己能力有问题？还是自己不喜讨好领导？唉~好好努力吧！</p>
+<a id="more"></a>
+
+<p>每次看数据结构，看完就忘。除了最常用的数组、栈、队列，其余的在”拧螺丝“的过程中基本用不到。所以每次学习完数据结构相关知识，过段时间只能记得个大概。</p>
+<!-- more -->
+
+<p>所以本篇文章整理一下数据结构的基本概念，没事的时候多读两遍，便于后期在面对 interviewer 时可以吹一会牛B。</p>
+<!-- more -->
+
+<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>数据结构+算法=程序</p>
+<p>通常在程序中，遇到一个实际问题，充分利用数据结构，将数据及其之间的关系有效地存储在计算机中，然后选择合适的算法策略，并用程序高效实现，这才是提高程序性能的主要方式。</p>
+<!-- more -->
+
+<h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p>数据结构表示数据在计算机中的存储和组织形式，主要描述数据元素之间和位置关系等。选择适当的数据结构可以提高计算机程序的运行效率（时间复杂度）和存储效率（空间复杂度）。</p>
+<!-- more -->
+
+<p>数据结构的三个方面：数据的逻辑结构、存储结构、运算</p>
+<ol>
+<li><p>数据的逻辑结构：主要描述数据元素之间的逻辑关系。</p>
+<p>线性结构（线性表、栈、队列和串）、非线性结构（数组、广义表、树结构、图结构）、集合（无逻辑关系）</p>
+<ul>
+<li>集合结构（集）：所有的元素都属于一个总体，除了同属于一个集合外没有其他关系。集合结构不强调元素之间的任何关联性。</li>
+<li>线性结构（表）：数据元素之间具有一对一的前后关系。结构中必须存在唯一的首元素和唯一的尾元素。</li>
+<li>树形结构（树）：数据元素之间一对多的关系</li>
+<li>网状结构（图）：图状结构或网状结构 结构中的数据元素之间存在多对多的关系</li>
+</ul>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/base1.jpg" alt="img"></p>
+</li>
+<li><p>数据的存储结构：主要描述的是数据元素之间的位置关系</p>
+<p>顺序结构： 顺序结构就是使用一组连续的存储单元依次存储逻辑上相邻的各个元素</p>
+<p><code>优点</code>： 只需要申请存放数据本身的内存空间即可，支持下标访问，也可以实现随机访问。<br><code>缺点</code>： 必须静态分配连续空间，内存空间的利用率比较低。插入或删除可能需要移动大量元素，效率比较低</p>
+<!-- more -->
+
+<p>链式结构： 链式存储结构不使用连续的存储空间存放结构的元素，而是为每一个元素构造一个节点。节点中除了存放数据本身以外，还需要存放指向下一个节点的指针。<br><code>优点</code>：   不采用连续的存储空间导致内存空间利用率比较高，克服顺序存储结构中预知元素个数的缺点<br>插入或删除元素时，不需要移动大量的元素。<br><code>缺点</code>： 需要额外的空间来表达数据之间的逻辑关系，<br>不支持下标访问和随机访问。</p>
+<!-- more -->
+
+<p>索引结构： 除建立存储节点信息外，还建立附加的索引表来标节点的地址。索引表由若干索引项组成。<br><code>优点</code>：   是用节点的索引号来确定结点存储地址，检索速度块<br><code>缺点</code>：  增加了附加的索引表,会占用较多的存储空间。</p>
+<!-- more -->
+
+<p>散列结构： 由节点的关键码值决定节点的存储地址。散列技术除了可以用于查找外，还可以用于存储。<br><code>优点</code>：   散列是数组存储方式的一种发展，采用存储数组中内容的部分元素作为映射函数的输入，映射函数的输出就是存储数据的位置,  相比数组，散列的数据访问速度要高于数组<br><code>缺点</code>： 不支持排序，一般比用线性表存储需要更多的空间，并且记录的关键字不能重复。</p>
+</li>
+<li><p>数据的运算：对数据施加的操作</p>
+<p>数据的运算其基本在于数据的逻辑结构上，每种逻辑结构都可以归纳一个运算的集合。最常用的运算包括搜索、插入、删除、更新、排序等。</p>
+<!-- more -->
+
+</li>
+</ol>
+<p>每种逻辑结构采用何种物理结构来实现，并没有具体的规定。当一个结构，在逻辑结构中只有一种定义，而在物理结构中却有两种选择，那么这个结构就属于逻辑结构。</p>
+<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/base2.jpg" alt="img"></p>
+<!-- more -->
+
+<h4 id="数据结构比较"><a href="#数据结构比较" class="headerlink" title="数据结构比较"></a>数据结构比较</h4><table>
+<thead>
+<tr>
+<th>数据结构</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数组</td>
+<td>插入快</td>
+<td>查找慢，删除慢，大小固定，只能存储单一元素</td>
+</tr>
+<tr>
+<td>有序数组</td>
+<td>比无序数组查询快</td>
+<td>插入慢，删除慢，大小固定，只能存储单一元素</td>
+</tr>
+<tr>
+<td>栈</td>
+<td>提供后进先出的存取方式</td>
+<td>存取其他项很慢</td>
+</tr>
+<tr>
+<td>队列</td>
+<td>提供先进先出的存取方式</td>
+<td>存取其他项很慢</td>
+</tr>
+<tr>
+<td>链表</td>
+<td>插入快，删除快</td>
+<td>查找慢</td>
+</tr>
+<tr>
+<td>二叉树</td>
+<td>如果树是平衡的，则插入、删除、查找都快</td>
+<td>删除算法复杂</td>
+</tr>
+<tr>
+<td>红黑树</td>
+<td>插入、删除、查找都快，树总是平衡的</td>
+<td>算法复杂</td>
+</tr>
+<tr>
+<td>2-3-4树</td>
+<td>插入、删除、查找都快，树总是平衡的</td>
+<td>算法复杂</td>
+</tr>
+<tr>
+<td>哈希表</td>
+<td>如果关键字已知，则存取极快</td>
+<td>删除慢，如果不知道关键字存取慢，对存储空间使用不充分</td>
+</tr>
+<tr>
+<td>堆</td>
+<td>插入、删除快，对最大数据项存取快</td>
+<td>对其他数据项存取慢</td>
+</tr>
+<tr>
+<td>图</td>
+<td>对现实世界建模</td>
+<td>有些算法慢且复杂</td>
+</tr>
+</tbody></table>
+<!-- more -->
+
+<h4 id="常用的数据结构"><a href="#常用的数据结构" class="headerlink" title="常用的数据结构"></a>常用的数据结构</h4><p><img src="https://github.com/nightGu/blogImg/raw/master/pg/base3.jpg" alt="img"></p>
+<!-- more -->
+
+<h4 id="数据结构选择"><a href="#数据结构选择" class="headerlink" title="数据结构选择"></a>数据结构选择</h4><p><img src="https://github.com/nightGu/blogImg/raw/master/pg/base4.jpg" alt="img"></p>
+<!-- more -->
+
+<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>O符号，O在算法当中表述的是时间复杂度，它在分析算法复杂性的方面非常有用。常见的有：</p>
+<ul>
+<li>O(1)：最低的复杂度，无论数据量大小，耗时都不变，都可以在一次计算后获得。哈希算法就是典型的O(1)；</li>
+<li>O(n)：线性，n表示数据的量，当量增大，耗时也增大，常见有遍历算法；</li>
+<li>O(n²)：平方，表示耗时是n的平方倍，当看到循环嵌循环的时候，基本上这个算法就是平方级的，如：冒泡排序等；</li>
+<li>O(log n)：对数，通常ax=n,那么数x叫做以a为底n的对数,也就是x= \log_a n，这里是a通常是2，如：数量增大8倍，耗时只增加了3倍，二分查找就是对数级的算法，每次剔除一半；</li>
+<li>O(n log n)：线性对数，就是n乘以log n,按照上面说的数据增大8倍，耗时就是8*3=24倍，归并排序就是线性对数级的算法。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/12/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="next" title="Java虚拟机-java内存模型">
+                <i class="fa fa-chevron-left"></i> Java虚拟机-java内存模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">nightGu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构比较"><span class="nav-number">3.</span> <span class="nav-text">数据结构比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的数据结构"><span class="nav-number">4.</span> <span class="nav-text">常用的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构选择"><span class="nav-number">5.</span> <span class="nav-text">数据结构选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度"><span class="nav-number">6.</span> <span class="nav-text">时间复杂度</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">nightGu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
