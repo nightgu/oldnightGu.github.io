@@ -229,6 +229,175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-if%20else%20%E5%BC%95%E5%8F%91%E7%9A%84%E6%94%AF%E4%BB%98%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-if%20else%20%E5%BC%95%E5%8F%91%E7%9A%84%E6%94%AF%E4%BB%98%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/" itemprop="url">设计模式-策略模式-if else 引发的支付设计思考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-19T19:25:28+08:00">
+                2020-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这篇文章本来是整理支付网关项目的工厂模式设计的。</p>
+<p>很巧，virus_liu发了一篇关于“if-else 策略模式优化”的文章，看完发现，原来支付网关项目同样引入了策略模式。故此，凭着记忆回忆一下支付网关的代码设计。</p>
+<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>支付网关最基本的几个功能包括银行卡认证、单笔扣款、交易查询、单笔付款、支付签约等等，这里不会细说（笔者忘得差不多了^_^）。作为一个支付网关，会有很多渠道进行上述的功能实现，比如银行直连的（银联、建行、邮储、招行、农行等），还有第三方渠道的（易宝、银生宝、支付宝、微信等），每个渠道都会有对方的规范（功能约束），但大体上都含有上述功能的实现。</p>
+<h4 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h4><p>策略模式一种行为型模式（特别关注对象之间的通信），简单来说，就是定义一组算法，将每一个算法封装起来，来进行切换使用。这里同样举那篇文章的折扣例子说明，所谓的“普通会员”、“白银会员”、“黄金会员”以及“白金会员”等的折扣力度在不同场景下的使用。如果通过if-else来写所有的折扣力度，将会写很多if-else语句判断。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (money &gt;= <span class="number">1000</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (type == UserType.SILVER_VIP.getCode()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"白银会员 优惠50元"</span>);</span><br><span class="line">        result = money - <span class="number">50</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type == UserType.GOLD_VIP.getCode()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"黄金会员 8折"</span>);</span><br><span class="line">        result = money * <span class="number">0.8</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type == UserType.PLATINUM_VIP.getCode()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"白金会员 优惠50元，再打7折"</span>);</span><br><span class="line">        result = (money - <span class="number">50</span>) * <span class="number">0.7</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"普通会员 不打折"</span>);</span><br><span class="line">        result = money;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//省略n个if-else</span></span><br></pre></td></tr></table></figure>
+
+<p>如何优雅的实现不用if-else？这里不细说，想要了解，查看</p>
+<p>[<a href="https://juejin.im/post/5def654f51882512302daeef]" target="_blank" rel="noopener">https://juejin.im/post/5def654f51882512302daeef]</a>: </p>
+<h4 id="支付网关的代码设计"><a href="#支付网关的代码设计" class="headerlink" title="支付网关的代码设计"></a>支付网关的代码设计</h4><p>如果看过上面的if-else优化设计的文章，就会知道思路：工厂+策略。这里的支付网关同样采用上述的思路，对于每增一个渠道就要新增一个工厂的“弊端”，我暂时也没有想出什么好的方案。（下面的代码只是凭自己记忆回忆出来的简单案例，与真正的支付网关代码设计还是有很大出入的）</p>
+<h5 id="渠道注解"><a href="#渠道注解" class="headerlink" title="渠道注解"></a>渠道注解</h5><p>定义一个渠道注解用来约束每一个新增的渠道</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Payment &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 支付渠道名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 渠道工厂</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Class&lt;? extends AbstractPaymentFactory&gt; paymentFactory();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="渠道"><a href="#渠道" class="headerlink" title="渠道"></a>渠道</h5><p>渠道接口（这里其实定义抽象类更好点，根据每种渠道的开放性来重写或实现功能）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 支付渠道接口</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IRoute</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 验证三要素接口</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">validThreeElements</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 扣款</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cut</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体渠道实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * AliPay渠道实现</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Payment</span>(name = <span class="string">"AliPay"</span>,paymentFactory = AliPayFactory<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">AliPayRoute</span> <span class="keyword">implements</span> <span class="title">IRoute</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validThreeElements</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//发起支付宝渠道的三要素验证，返回业务响应</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//发起支付宝渠道的扣款请求，返回业务响应</span></span><br><span class="line">        System.out.println(<span class="string">"Do AliPay cut"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ChinaPay渠道实现</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Payment</span>(name = <span class="string">"ChinaPay"</span>,paymentFactory = ChinaPayFactory<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">ChinaPayRoute</span> <span class="keyword">implements</span> <span class="title">IRoute</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validThreeElements</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//发起银联渠道的三要素验证，返回业务响应</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//发起银联渠道的扣款请求，返回业务响应</span></span><br><span class="line">        System.out.println(<span class="string">"Do ChinaPay cut"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="工厂"><a href="#工厂" class="headerlink" title="工厂"></a>工厂</h5><p>抽象支付工厂类（这里仅做了创建渠道实例的功能，还可以定义其他约束，比如Proxy，抽出真正支付渠道的访问）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPaymentFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> IRoute <span class="title">genRoute</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体渠道的工厂</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AliPayFactory</span> <span class="keyword">extends</span> <span class="title">AbstractPaymentFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">IRoute <span class="title">genRoute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AliPayRoute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChinaPayFactory</span> <span class="keyword">extends</span> <span class="title">AbstractPaymentFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">IRoute <span class="title">genRoute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ChinaPayRoute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h5><p>在程序初始化时，通过反射机制将所有的支付渠道放入Map，在业务场景中，根据指定的渠道来获取对应的实例对象。（这里就是所谓的“优雅的处理”了if-else语句）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaymentFactory</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> PaymentFactory instance = <span class="keyword">new</span> PaymentFactory();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, IRoute&gt; routeMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//根据接口类型返回相应的所有bean</span></span><br><span class="line">        Collection&lt;IRoute&gt; routeList = <span class="keyword">new</span> LinkedList&lt;&gt;(applicationContext.getBeansOfType(IRoute<span class="class">.<span class="keyword">class</span>).<span class="title">values</span>())</span>;</span><br><span class="line"></span><br><span class="line">        routeList.stream().forEach(iRoute -&gt; &#123;</span><br><span class="line">            Class&lt;IRoute&gt; clz = (Class&lt;IRoute&gt;) iRoute.getClass();</span><br><span class="line">            <span class="keyword">if</span>(clz.isAnnotationPresent(Payment<span class="class">.<span class="keyword">class</span>))</span>&#123;</span><br><span class="line">                Payment paymentAno = clz.getAnnotation(Payment<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    routeMap.put(paymentAno.name(),paymentAno.paymentFactory().newInstance().genRoute());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PaymentFactory <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IRoute <span class="title">getRoute</span><span class="params">(String routeName)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> routeMap.get(routeName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="业务"><a href="#业务" class="headerlink" title="业务"></a>业务</h5><p>业务实现，在一笔支付交易进行扣款功能前，首先进行配置规则以及一系列的政策处理，得到合适的支付渠道，然后进行鉴权（三要素或者四要素验证），最后由支付渠道去进行扣款操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPaymentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cutMoney</span><span class="params">(Order order,String route)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaymentServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPaymentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cutMoney</span><span class="params">(Order order,String route)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//.....前面根据配置规则以及一系列的优先政策找到合适的支付渠道</span></span><br><span class="line">        IRoute iRoute = PaymentFactory.getInstance().getRoute(route);</span><br><span class="line"></span><br><span class="line">        iRoute.cut();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h4><p>支付网关的案例只是根据回忆写的一小部分，支付网关是个很庞大的项目，包括架构设计等，当时没有认真的从这个项目里学习，很是惭愧。</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>[<a href="https://juejin.im/post/5c1ca8df6fb9a049b347f55c]" target="_blank" rel="noopener">https://juejin.im/post/5c1ca8df6fb9a049b347f55c]</a>: </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -887,7 +1056,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
