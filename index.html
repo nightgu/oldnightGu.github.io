@@ -243,6 +243,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/20/mysql-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E8%A7%84%E5%88%99%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/20/mysql-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E8%A7%84%E5%88%99%E6%95%B4%E7%90%86/" itemprop="url">mysql-联合索引的规则整理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-20T11:42:08+08:00">
+                2020-02-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p><code>interview</code> 时遇到了关于联合索引的问题，大致问题如下：</p>
+<p>联合索引  <code>A、B、C</code> 三个字段，在 <code>where</code> 条件后 如果只有 <code>A and B</code> ，该索引是否有效？如果 只有 <code>B and C</code>，该索引是否有效？如果 是 <code>A or B</code> ,该索引是否有效？</p>
+<p>联合索引的问题是由 优化 <code>mysql</code>  有哪些措施这问题（优化查询语句、添加索引、联合索引等等解决方案）引申出来的，之前从没想过联合索引的一系列问题，这边做一下研究与整理。</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>联合索引，又名复合索引，两个或更多列创建的索引称为 联合索引。<code>mysql</code> 从左到右使用索引中的字段，一个查询可以只使用索引中的一部分，但必须包含最左侧部分。例如联合索引 <code>index_key(a,b,c)</code>，可以支持 <code>a | a,b | a,c |a,b,c</code>  四种组合进行查找，不支持 <code>b,c</code> 组合进行查找。如果 使用 <code>or</code> 连接，则索引不会作用。</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>新建一张 <code>user</code> 表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'姓名'</span>,</span><br><span class="line">  <span class="string">`password`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'密码'</span>,</span><br><span class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'年龄'</span>,</span><br><span class="line">  <span class="string">`email`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'邮箱'</span>,</span><br><span class="line">  <span class="string">`sex`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'性别'</span>,</span><br><span class="line">  <span class="string">`createTime`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">  <span class="string">`roleId`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'角色ID'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`query_index`</span> (<span class="string">`name`</span>,<span class="string">`age`</span>,<span class="string">`sex`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br></pre></td></tr></table></figure>
+
+<p>假设下列创建的联合索引都满足索引创建条件。通过如下<code>sql</code> create。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> query_index <span class="keyword">on</span> <span class="keyword">user</span> (<span class="keyword">name</span>,age,sex);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="单字段"><a href="#单字段" class="headerlink" title="单字段"></a>单字段</h5><h6 id="查询条件为name"><a href="#查询条件为name" class="headerlink" title="查询条件为name"></a>查询条件为<code>name</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> ;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_1.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
+<h6 id="查询条件为age"><a href="#查询条件为age" class="headerlink" title="查询条件为age"></a>查询条件为<code>age</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_2.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
+<h6 id="查询条件为-sex"><a href="#查询条件为-sex" class="headerlink" title="查询条件为 sex"></a>查询条件为 <code>sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_3.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
+<h5 id="双字段"><a href="#双字段" class="headerlink" title="双字段"></a>双字段</h5><h6 id="查询条件为-name-and-age"><a href="#查询条件为-name-and-age" class="headerlink" title="查询条件为 name and age"></a>查询条件为 <code>name and age</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_4.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
+<p>如果 <code>name and age</code> 切换先后顺序。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span> <span class="keyword">and</span> <span class="keyword">name</span> = <span class="string">'nightGu'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_5.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
+<h6 id="查询条件为-age-and-sex"><a href="#查询条件为-age-and-sex" class="headerlink" title="查询条件为 age and sex"></a>查询条件为 <code>age and sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_6.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
+<h6 id="查询条件为-name-and-sex"><a href="#查询条件为-name-and-sex" class="headerlink" title="查询条件为 name and sex"></a>查询条件为 <code>name and sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_7.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
+<h5 id="三字段"><a href="#三字段" class="headerlink" title="三字段"></a>三字段</h5><h6 id="查询条件为-name-and-age-and-sex"><a href="#查询条件为-name-and-age-and-sex" class="headerlink" title="查询条件为  name and age and sex"></a>查询条件为  name and age and sex</h6><p>这是 联合索引 最正统的用法。肯定是有效的。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> age = <span class="number">18</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_8.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
+<h5 id="OR-连接符"><a href="#OR-连接符" class="headerlink" title="OR 连接符"></a>OR 连接符</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">or</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_9.png" alt=""></p>
+<p>通过 <code>key</code> 可以看出，联合索 <strong>无效</strong>。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>针对 联合索引 的使用，必须满足 最左前缀原则，即 以最左边的为起点。当创建 <code>（a,b,c）</code>联合索引时，相当于创建了以 <code>a</code> 为 起点的 其他联合索引，如 <code>（a,b）、（a,b,c）</code>等。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/Collection-HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1491,7 +1661,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
