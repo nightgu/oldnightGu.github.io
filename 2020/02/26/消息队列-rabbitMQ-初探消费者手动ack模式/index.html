@@ -83,11 +83,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="无处安放的灵魂">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="前言项目开发过程中，消息队列常常会被使用，用于业务解耦、异步、削峰等等。使用消息队列，不仅仅用起来就行了，也要思考关于使用消息队列后续的问题。比如消息队列如何高可用？数据如何可靠性传输？如何保证消息的顺序？等等问题。 本篇文章整理一下关于RabbitMQ 消费者 保证数据 可靠性传输（消费端弄丢了数据怎么办？） 介绍RabbitMQ是实现 AMQP（高级消息队列协议）的消息中间件的一种，主要是为了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列-rabbitMQ-初探消费者手动ack模式">
+<meta property="og:url" content="http://yoursite.com/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="无处安放的灵魂">
+<meta property="og:description" content="前言项目开发过程中，消息队列常常会被使用，用于业务解耦、异步、削峰等等。使用消息队列，不仅仅用起来就行了，也要思考关于使用消息队列后续的问题。比如消息队列如何高可用？数据如何可靠性传输？如何保证消息的顺序？等等问题。 本篇文章整理一下关于RabbitMQ 消费者 保证数据 可靠性传输（消费端弄丢了数据怎么办？） 介绍RabbitMQ是实现 AMQP（高级消息队列协议）的消息中间件的一种，主要是为了">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-26T13:50:53.397Z">
+<meta property="article:modified_time" content="2020-02-26T13:50:07.482Z">
 <meta property="article:author" content="nightGu">
 <meta name="twitter:card" content="summary">
 
@@ -119,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/02/26/消息队列-rabbitMQ-初探消费者手动ack模式/"/>
 
 
 
 
 
-  <title>无处安放的灵魂</title>
+  <title>消息队列-rabbitMQ-初探消费者手动ack模式 | 无处安放的灵魂</title>
   
 
 
@@ -144,8 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -228,9 +231,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -260,9 +263,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/" itemprop="url">消息队列-rabbitMQ-初探消费者手动ack模式</a></h1>
+          <h1 class="post-title" itemprop="name headline">消息队列-rabbitMQ-初探消费者手动ack模式</h1>
         
 
         <div class="post-meta">
@@ -312,9 +313,7 @@
       
 
       
-        
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>项目开发过程中，消息队列常常会被使用，用于业务解耦、异步、削峰等等。使用消息队列，不仅仅用起来就行了，也要思考关于使用消息队列后续的问题。比如消息队列如何高可用？数据如何可靠性传输？如何保证消息的顺序？等等问题。</p>
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>项目开发过程中，消息队列常常会被使用，用于业务解耦、异步、削峰等等。使用消息队列，不仅仅用起来就行了，也要思考关于使用消息队列后续的问题。比如消息队列如何高可用？数据如何可靠性传输？如何保证消息的顺序？等等问题。</p>
 <p>本篇文章整理一下关于<code>RabbitMQ</code> 消费者 保证数据 可靠性传输（消费端弄丢了数据怎么办？）</p>
 <h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p><code>RabbitMQ</code>是实现 <code>AMQP</code>（高级消息队列协议）的消息中间件的一种，主要是为了实现系统之间的双向解耦而实现的。</p>
 <p><code>RabbitMQ</code> 服务器端用 <code>Erlang</code> 语言编写，支持多种客户端，如：<code>Python</code>、<code>Ruby</code>、.<code>NET</code>、<code>Java</code>、<code>JMS</code>、<code>C</code>、<code>PHP</code>、<code>ActionScript</code>、<code>XMPP</code>、<code>STOMP</code>等，支持<code>AJAX</code>。用于在分布式系统中存储转发消息，在易用性、扩展性、高可用性等方面表现不俗。</p>
@@ -396,8 +395,6 @@
 </ul>
 <p>当此队列只有一个消费者时，请确认不要由于拒绝消息并且选择了重新放入队列的行为而引起消息在同一个消费者身上无限循环的情况发生。</p>
 
-          
-        
       
     </div>
     
@@ -414,174 +411,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/24/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="nightGu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无处安放的灵魂">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/24/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="url">线程池-初探几种常用线程池的使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-24T21:47:03+08:00">
-                2020-02-24
-              </time>
+              <a href="/2020/02/24/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="next" title="线程池-初探几种常用线程池的使用">
+                <i class="fa fa-chevron-left"></i> 线程池-初探几种常用线程池的使用
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>前一篇文章整理了线程池的概念、结构、创建以及任务执行流程、策略类型，在实际开发过程中，或许我们接触更多的是常用线程池的使用。</p>
-<h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h4><h5 id="线程池的工作队列"><a href="#线程池的工作队列" class="headerlink" title="线程池的工作队列"></a>线程池的工作队列</h5><p>在<code>ThreadPoolExecutor</code> 构造函数中 有一个 <code>BlockingQueue&lt;Runnable&gt; workQueue</code> 参数，该参数表示 存放任务的阻塞队列。</p>
-<p><code>juc</code> 包下提供了5 种工作队列。</p>
-<ul>
-<li><p><code>ArrayBlockingQueue</code>      有界队列</p>
-<p><code>ArrayBlockingQueue</code>  是一个用数组实现的有界阻塞队列，按FIFO排序。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>LinkedBlockingQueue</code>      可设置容量队列</p>
-<p><code>LinkedBlockingQueue</code>  基于链表结构的阻塞队列，按FIFO排序任务，容量可以选择进行设置，不设置的话，将是一个无边界的阻塞队列，最大长度为 <code>Integer.MAX_VALUE</code>，吞吐量通常要高于<code>ArrayBlockingQuene</code> ，常用的线程池之一 <code>newFixedThreadPool</code>（固定数目线程的线程池）使用了这个队列。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>DelayQueue</code>        延迟队列</p>
-<p><code>DelayQueue</code>  是一个任务定时周期的延迟执行的队列。根据指定的执行时间从小到大排序，否则根据插入到队列的先后排序。常用的线程池之一 <code>newScheduledThreadPool</code>（定时及周期执行的线程池）使用了这个队列。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>PriorityBlockingQueue</code>        优先级队列</p>
-<p><code>PriorityBlockingQueue</code>  是具有优先级的无界阻塞队列；</p>
-</li>
-</ul>
-<ul>
-<li><p><code>SynchronousQueue</code>        同步队列</p>
-<p><code>SynchronousQueue</code> 是一个不存储元素的阻塞队列，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态，吞吐量通常要高于 <code>LinkedBlockingQuene</code>，<code>newCachedThreadPool</code>  （可缓存线程的线程池）使用了这个队列。</p>
-</li>
-</ul>
-<h5 id="常用线程池"><a href="#常用线程池" class="headerlink" title="常用线程池"></a>常用线程池</h5><p><code>Executors</code> 工具类 提供了 四种常用的线程池。</p>
-<ul>
-<li><code>newFixedThreadPool</code> ：固定数目线程的线程池</li>
-<li><code>newCachedThreadPool</code> ：可缓存线程的线程池</li>
-<li><code>newSingleThreadExecutor</code> ：单线程的线程池</li>
-<li><code>newScheduledThreadPool</code> ：定时及周期执行的线程池</li>
-</ul>
-<h6 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a><code>newFixedThreadPool</code></h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads, ThreadFactory threadFactory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(),</span><br><span class="line">                                  threadFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>从静态方法可以看出：</p>
-<ol>
-<li>核心线程数和最大线程数大小一样</li>
-<li>没有非空闲时间，即<code>keepAliveTime</code> = 0</li>
-<li>阻塞队列为无界队列 <code>LinkedBlockingQueue</code></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -591,14 +442,11 @@
   </article>
 
 
-    
-  </section>
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">next</a>
-  </nav>
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -606,6 +454,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -626,8 +478,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -676,6 +537,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#场景"><span class="nav-number">3.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案"><span class="nav-number">4.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#pom-依赖"><span class="nav-number">5.1.</span> <span class="nav-text">pom  依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置文件"><span class="nav-number">5.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置-Bean"><span class="nav-number">5.3.</span> <span class="nav-text">配置 Bean</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#手动-ack-配置"><span class="nav-number">5.4.</span> <span class="nav-text">手动 ack 配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#消费端"><span class="nav-number">5.5.</span> <span class="nav-text">消费端</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#消息确认方法"><span class="nav-number">5.5.1.</span> <span class="nav-text">消息确认方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#消息拒绝方法"><span class="nav-number">5.5.2.</span> <span class="nav-text">消息拒绝方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -809,6 +686,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
