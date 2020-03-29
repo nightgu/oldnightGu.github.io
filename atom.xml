@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-19T12:10:38.705Z</updated>
+  <updated>2020-03-29T08:18:02.722Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SpringBoot+Redis-String类型基本使用方法 </title>
+    <link href="http://yoursite.com/2020/03/29/SpringBoot+Redis-String%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%20/"/>
+    <id>http://yoursite.com/2020/03/29/SpringBoot+Redis-String%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%20/</id>
+    <published>2020-03-29T08:18:50.072Z</published>
+    <updated>2020-03-29T08:18:02.722Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;&lt;code&gt;Redis&lt;/code&gt;是一个开源内存数据结构存储器，在业务架构中经常用作数据库、缓存及消息代理等。&lt;/p&gt;
+&lt;p&gt;不容置疑，&lt;code&gt;Redis&lt;/code&gt; 有着丰富的数据结构，极快的速度，齐全的功能，它是目前内存数据库方面的事实标准。目前国内外公司基本都在使用&lt;code&gt;Redis&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;当然，&lt;code&gt;Memcached&lt;/code&gt; 和 &lt;code&gt;Redis&lt;/code&gt; 各有各的优势， 但目前 &lt;code&gt;Redis 5&lt;/code&gt;版本的功能特性基本囊括了&lt;code&gt;Memcached&lt;/code&gt;的功能。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Algorithms-初探回溯算法基本思路</title>
