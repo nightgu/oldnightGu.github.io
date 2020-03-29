@@ -91,7 +91,7 @@
 <meta property="og:description" content="前言这篇文章整理Redis  散列类型 的使用。基于spring boot + redis 构建项目，lettuce  作为 redis 客户端。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-29T08:50:40.597Z">
-<meta property="article:modified_time" content="2020-03-29T06:32:22.007Z">
+<meta property="article:modified_time" content="2020-03-29T12:22:11.207Z">
 <meta property="article:author" content="nightGu">
 <meta name="twitter:card" content="summary">
 
@@ -323,7 +323,7 @@
 
 <!--more-->
 
-<h5 id="2-1-HSet"><a href="#2-1-HSet" class="headerlink" title="2.1 HSet"></a>2.1 <code>HSet</code></h5><p>为字段设置值</p>
+<h5 id="HSet"><a href="#HSet" class="headerlink" title="HSet"></a><code>HSet</code></h5><p>为字段设置值</p>
 <ol>
 <li>如果给定字段并不存在于散列当中，那么这次设置就是一次创建操作，命令将在散列里面关联起给定的字段和值，然后返回1；</li>
 <li>如果给定的字段原本已经存在于散列里面，那么这次设置就是一次更新操作，命令将使用用户给定的新值去覆盖字段原有的旧值，然后返回0。</li>
@@ -334,7 +334,7 @@
 
 <!--more-->
 
-<h5 id="2-2-HSetNX"><a href="#2-2-HSetNX" class="headerlink" title="2.2 HSetNX"></a>2.2 <code>HSetNX</code></h5><p>只在字段不存在的情况下为它设置值</p>
+<h5 id="HSetNX"><a href="#HSetNX" class="headerlink" title="HSetNX"></a><code>HSetNX</code></h5><p>只在字段不存在的情况下为它设置值</p>
 <ul>
 <li><code>HSETNX</code> 命令在字段不存在并且成功为它设置值时返回1，在字段已经存在并导致设置操作未能成功执行时返回0。</li>
 </ul>
@@ -344,7 +344,7 @@
 
 <!--more-->
 
-<h5 id="2-3-HGet"><a href="#2-3-HGet" class="headerlink" title="2.3 HGet"></a>2.3 <code>HGet</code></h5><p>获取字段的值</p>
+<h5 id="HGet"><a href="#HGet" class="headerlink" title="HGet"></a><code>HGet</code></h5><p>获取字段的值</p>
 <ul>
 <li>如果用户给定的字段并不存在于散列当中，那么<code>HGet</code> 命令将返回一个空值</li>
 </ul>
@@ -354,12 +354,12 @@
 
 <!--more-->
 
-<h5 id="2-4-HIncrBy"><a href="#2-4-HIncrBy" class="headerlink" title="2.4 HIncrBy"></a>2.4 <code>HIncrBy</code></h5><p>对字段存储的整数值执行加法或减法操作</p>
+<h5 id="HIncrBy"><a href="#HIncrBy" class="headerlink" title="HIncrBy"></a><code>HIncrBy</code></h5><p>对字段存储的整数值执行加法或减法操作</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"age"</span>,<span class="number">1</span>);</span><br><span class="line">System.out.println(redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"age"</span>));</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"age"</span>,-<span class="number">2</span>);</span><br><span class="line">System.out.println(redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"age"</span>));</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"author"</span>,-<span class="number">2</span>);<span class="comment">//对于非整数类型的数据，抛出异常</span></span><br></pre></td></tr></table></figure>
 
 <!--more-->
 
-<h5 id="2-5-HIncrByFloat"><a href="#2-5-HIncrByFloat" class="headerlink" title="2.5 HIncrByFloat"></a>2.5 <code>HIncrByFloat</code></h5><p>对字段存储的数字值执行浮点数加法或减法操作。</p>
+<h5 id="HIncrByFloat"><a href="#HIncrByFloat" class="headerlink" title="HIncrByFloat"></a><code>HIncrByFloat</code></h5><p>对字段存储的数字值执行浮点数加法或减法操作。</p>
 <ul>
 <li>与<code>HIncrBy</code>的区别是<code>HIncrByFloat</code>不仅可以使用整数作为增量，还可以使用浮点数作为增量。</li>
 </ul>
@@ -367,14 +367,14 @@
 
 <!--more-->
 
-<h5 id="2-6-HStrLen"><a href="#2-6-HStrLen" class="headerlink" title="2.6 HStrLen"></a>2.6 <code>HStrLen</code></h5><p>获取给定字段值的字节长度。</p>
+<h5 id="HStrLen"><a href="#HStrLen" class="headerlink" title="HStrLen"></a><code>HStrLen</code></h5><p>获取给定字段值的字节长度。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(redisTemplate.opsForHash().lengthOfValue(HASH_PREFIX_KEY,<span class="string">"author"</span>));</span><br><span class="line"></span><br><span class="line">System.out.println(redisTemplate.opsForHash().lengthOfValue(HASH_PREFIX_KEY,<span class="string">"not_exist_key"</span>));<span class="comment">//如果key不存在，则返回0</span></span><br></pre></td></tr></table></figure>
 
 
 
 <!--more-->
 
-<h5 id="2-7-HExists"><a href="#2-7-HExists" class="headerlink" title="2.7 HExists"></a>2.7 <code>HExists</code></h5><p>检查字段是否存在</p>
+<h5 id="HExists"><a href="#HExists" class="headerlink" title="HExists"></a><code>HExists</code></h5><p>检查字段是否存在</p>
 <ul>
 <li>如果散列包含了给定的字段，那么命令返回1，否则命令返回0。</li>
 </ul>
@@ -384,7 +384,7 @@
 
 <!--more-->
 
-<h5 id="2-8-HDel"><a href="#2-8-HDel" class="headerlink" title="2.8 HDel"></a>2.8 <code>HDel</code></h5><p>删除字段</p>
+<h5 id="HDel"><a href="#HDel" class="headerlink" title="HDel"></a><code>HDel</code></h5><p>删除字段</p>
 <ul>
 <li>当给定字段存在于散列当中并且被成功删除时，命令返回1；</li>
 <li>如果给定字段并不存在于散列当中，或者给定的散列并不存在，那么命令将返回0表示删除失败。</li>
@@ -395,14 +395,14 @@
 
 <!--more-->
 
-<h5 id="2-9-HLen"><a href="#2-9-HLen" class="headerlink" title="2.9 HLen"></a>2.9 <code>HLen</code></h5><p>获取给定散列包含的字段数量</p>
+<h5 id="HLen"><a href="#HLen" class="headerlink" title="HLen"></a><code>HLen</code></h5><p>获取给定散列包含的字段数量</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(redisTemplate.opsForHash().size(HASH_PREFIX_KEY));</span><br><span class="line">System.out.println(redisTemplate.opsForHash().size(<span class="string">"not-exist-key"</span>));<span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
 
 
 
 <!--more-->
 
-<h5 id="2-10-HMSet-和-HMGet"><a href="#2-10-HMSet-和-HMGet" class="headerlink" title="2.10 HMSet 和 HMGet"></a>2.10 <code>HMSet</code> 和 <code>HMGet</code></h5><p><code>HMSet</code> ：一次为多个字段设置值，如果给定的字段已经存在散列中，则新值覆盖旧址</p>
+<h5 id="HMSet-和-HMGet"><a href="#HMSet-和-HMGet" class="headerlink" title="HMSet 和 HMGet"></a><code>HMSet</code> 和 <code>HMGet</code></h5><p><code>HMSet</code> ：一次为多个字段设置值，如果给定的字段已经存在散列中，则新值覆盖旧址</p>
 <p><code>HMGet</code> ：一次获取多个字段的值</p>
 <ul>
 <li>客户端在执行这条<code>HMSet</code>命令时只需要与<code>Redis</code>服务器进行一次通信，而上面的4条<code>HSet</code>命令则需要客户端与<code>Redis</code>服务器进行4次通信，所以<code>HMSet</code>的执行速度要比执行多条<code>HSet</code>快得多。</li>
@@ -414,7 +414,7 @@
 
 <!--more-->
 
-<h5 id="2-11-HKeys、HVals、HGetAll"><a href="#2-11-HKeys、HVals、HGetAll" class="headerlink" title="2.11 HKeys、HVals、HGetAll"></a>2.11 <code>HKeys</code>、<code>HVals</code>、<code>HGetAll</code></h5><p><code>HKeys</code>：获取散列的所有字段</p>
+<h5 id="HKeys、HVals、HGetAll"><a href="#HKeys、HVals、HGetAll" class="headerlink" title="HKeys、HVals、HGetAll"></a><code>HKeys</code>、<code>HVals</code>、<code>HGetAll</code></h5><p><code>HKeys</code>：获取散列的所有字段</p>
 <p><code>HVals</code>：获取散列的所有值</p>
 <p><code>HGetAll</code>：获取散列的所有字段和值</p>
 <ul>
@@ -618,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash-类型基本使用"><span class="nav-number">2.</span> <span class="nav-text">Hash 类型基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-HSet"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 HSet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-HSetNX"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 HSetNX</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-HGet"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 HGet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-HIncrBy"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 HIncrBy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-HIncrByFloat"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 HIncrByFloat</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-6-HStrLen"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 HStrLen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-7-HExists"><span class="nav-number">2.7.</span> <span class="nav-text">2.7 HExists</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-8-HDel"><span class="nav-number">2.8.</span> <span class="nav-text">2.8 HDel</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-9-HLen"><span class="nav-number">2.9.</span> <span class="nav-text">2.9 HLen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-10-HMSet-和-HMGet"><span class="nav-number">2.10.</span> <span class="nav-text">2.10 HMSet 和 HMGet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-11-HKeys、HVals、HGetAll"><span class="nav-number">2.11.</span> <span class="nav-text">2.11 HKeys、HVals、HGetAll</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#散列和字符串比较"><span class="nav-number">3.</span> <span class="nav-text">散列和字符串比较</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#散列和字符串各自优点"><span class="nav-number">3.1.</span> <span class="nav-text">散列和字符串各自优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#散列和字符串的选择"><span class="nav-number">3.2.</span> <span class="nav-text">散列和字符串的选择</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash-类型基本使用"><span class="nav-number">2.</span> <span class="nav-text">Hash 类型基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HSet"><span class="nav-number">2.1.</span> <span class="nav-text">HSet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HSetNX"><span class="nav-number">2.2.</span> <span class="nav-text">HSetNX</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HGet"><span class="nav-number">2.3.</span> <span class="nav-text">HGet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HIncrBy"><span class="nav-number">2.4.</span> <span class="nav-text">HIncrBy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HIncrByFloat"><span class="nav-number">2.5.</span> <span class="nav-text">HIncrByFloat</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HStrLen"><span class="nav-number">2.6.</span> <span class="nav-text">HStrLen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HExists"><span class="nav-number">2.7.</span> <span class="nav-text">HExists</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HDel"><span class="nav-number">2.8.</span> <span class="nav-text">HDel</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HLen"><span class="nav-number">2.9.</span> <span class="nav-text">HLen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HMSet-和-HMGet"><span class="nav-number">2.10.</span> <span class="nav-text">HMSet 和 HMGet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HKeys、HVals、HGetAll"><span class="nav-number">2.11.</span> <span class="nav-text">HKeys、HVals、HGetAll</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#散列和字符串比较"><span class="nav-number">3.</span> <span class="nav-text">散列和字符串比较</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#散列和字符串各自优点"><span class="nav-number">3.1.</span> <span class="nav-text">散列和字符串各自优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#散列和字符串的选择"><span class="nav-number">3.2.</span> <span class="nav-text">散列和字符串的选择</span></a></li></ol></li></ol></div>
             
 
           </div>
