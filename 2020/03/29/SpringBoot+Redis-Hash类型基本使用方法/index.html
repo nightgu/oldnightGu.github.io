@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-cn">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="无处安放的灵魂" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言这篇文章整理Redis  散列类型 的使用。基于spring boot + redis 构建项目，lettuce  作为 redis 客户端。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot+Redis-Hash类型基本使用方法">
+<meta property="og:url" content="http://yoursite.com/2020/03/29/SpringBoot+Redis-Hash%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="无处安放的灵魂">
+<meta property="og:description" content="前言这篇文章整理Redis  散列类型 的使用。基于spring boot + redis 构建项目，lettuce  作为 redis 客户端。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-29T08:50:40.597Z">
+<meta property="article:modified_time" content="2020-03-29T06:32:22.007Z">
+<meta property="article:author" content="nightGu">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/29/SpringBoot+Redis-Hash类型基本使用方法/"/>
+
+
+
+
+
+  <title>SpringBoot+Redis-Hash类型基本使用方法 | 无处安放的灵魂</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无处安放的灵魂</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">乘风破浪会有时，直挂云帆济沧海</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/29/SpringBoot+Redis-Hash%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot+Redis-Hash类型基本使用方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-29T16:50:40+08:00">
+                2020-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>这篇文章整理<code>Redis</code>  散列类型 的使用。基于<code>spring boot</code> + <code>redis</code> 构建项目，<code>lettuce</code>  作为 <code>redis</code> 客户端。  </p>
+<a id="more"></a>
+
+<h4 id="Hash-类型基本使用"><a href="#Hash-类型基本使用" class="headerlink" title="Hash 类型基本使用"></a>Hash 类型基本使用</h4><p>使用 <code>RedisTemplate</code> 去调用<code>spring-boot-data-redis</code>封装好的Hash 类型命令使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="comment">//自定义的key-prefix</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String HASH_PREFIX_KEY = <span class="string">"article::10001"</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-1-HSet"><a href="#2-1-HSet" class="headerlink" title="2.1 HSet"></a>2.1 <code>HSet</code></h5><p>为字段设置值</p>
+<ol>
+<li>如果给定字段并不存在于散列当中，那么这次设置就是一次创建操作，命令将在散列里面关联起给定的字段和值，然后返回1；</li>
+<li>如果给定的字段原本已经存在于散列里面，那么这次设置就是一次更新操作，命令将使用用户给定的新值去覆盖字段原有的旧值，然后返回0。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForHash().put(HASH_PREFIX_KEY,<span class="string">"author"</span>,<span class="string">"nightGu"</span>);</span><br><span class="line">redisTemplate.opsForHash().put(HASH_PREFIX_KEY,<span class="string">"age"</span>,<span class="string">"27"</span>);</span><br><span class="line">redisTemplate.opsForHash().put(HASH_PREFIX_KEY,<span class="string">"sex"</span>,<span class="string">"male"</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-2-HSetNX"><a href="#2-2-HSetNX" class="headerlink" title="2.2 HSetNX"></a>2.2 <code>HSetNX</code></h5><p>只在字段不存在的情况下为它设置值</p>
+<ul>
+<li><code>HSETNX</code> 命令在字段不存在并且成功为它设置值时返回1，在字段已经存在并导致设置操作未能成功执行时返回0。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span> result = (Boolean) redisTemplate.execute((RedisCallback) action -&gt;&#123;</span><br><span class="line">    <span class="keyword">return</span> action.hSetNX(HASH_PREFIX_KEY.getBytes(),<span class="string">"bookName"</span>.getBytes(),<span class="string">"nightGu123"</span>.getBytes());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">System.out.println(result);</span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-3-HGet"><a href="#2-3-HGet" class="headerlink" title="2.3 HGet"></a>2.3 <code>HGet</code></h5><p>获取字段的值</p>
+<ul>
+<li>如果用户给定的字段并不存在于散列当中，那么<code>HGet</code> 命令将返回一个空值</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String author = (String)redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"author"</span>);</span><br><span class="line">String bookName = (String)redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"bookName"</span>);</span><br><span class="line">System.out.println(author+<span class="string">"::"</span>+bookName);</span><br><span class="line"></span><br><span class="line">String nothing = (String) redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"not-exist-key"</span>);</span><br><span class="line">System.out.println(nothing); <span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-4-HIncrBy"><a href="#2-4-HIncrBy" class="headerlink" title="2.4 HIncrBy"></a>2.4 <code>HIncrBy</code></h5><p>对字段存储的整数值执行加法或减法操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"age"</span>,<span class="number">1</span>);</span><br><span class="line">System.out.println(redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"age"</span>));</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"age"</span>,-<span class="number">2</span>);</span><br><span class="line">System.out.println(redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"age"</span>));</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"author"</span>,-<span class="number">2</span>);<span class="comment">//对于非整数类型的数据，抛出异常</span></span><br></pre></td></tr></table></figure>
+
+<!--more-->
+
+<h5 id="2-5-HIncrByFloat"><a href="#2-5-HIncrByFloat" class="headerlink" title="2.5 HIncrByFloat"></a>2.5 <code>HIncrByFloat</code></h5><p>对字段存储的数字值执行浮点数加法或减法操作。</p>
+<ul>
+<li>与<code>HIncrBy</code>的区别是<code>HIncrByFloat</code>不仅可以使用整数作为增量，还可以使用浮点数作为增量。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForHash().increment(HASH_PREFIX_KEY,<span class="string">"age"</span>,<span class="number">2.2</span>);</span><br><span class="line">System.out.println(redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"age"</span>));</span><br></pre></td></tr></table></figure>
+
+<!--more-->
+
+<h5 id="2-6-HStrLen"><a href="#2-6-HStrLen" class="headerlink" title="2.6 HStrLen"></a>2.6 <code>HStrLen</code></h5><p>获取给定字段值的字节长度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(redisTemplate.opsForHash().lengthOfValue(HASH_PREFIX_KEY,<span class="string">"author"</span>));</span><br><span class="line"></span><br><span class="line">System.out.println(redisTemplate.opsForHash().lengthOfValue(HASH_PREFIX_KEY,<span class="string">"not_exist_key"</span>));<span class="comment">//如果key不存在，则返回0</span></span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-7-HExists"><a href="#2-7-HExists" class="headerlink" title="2.7 HExists"></a>2.7 <code>HExists</code></h5><p>检查字段是否存在</p>
+<ul>
+<li>如果散列包含了给定的字段，那么命令返回1，否则命令返回0。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(redisTemplate.opsForHash().hasKey(HASH_PREFIX_KEY,<span class="string">"age"</span>)); <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line">System.out.println(redisTemplate.opsForHash().hasKey(HASH_PREFIX_KEY,<span class="string">"not-exist-key"</span>));  <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-8-HDel"><a href="#2-8-HDel" class="headerlink" title="2.8 HDel"></a>2.8 <code>HDel</code></h5><p>删除字段</p>
+<ul>
+<li>当给定字段存在于散列当中并且被成功删除时，命令返回1；</li>
+<li>如果给定字段并不存在于散列当中，或者给定的散列并不存在，那么命令将返回0表示删除失败。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(redisTemplate.opsForHash().delete(HASH_PREFIX_KEY,<span class="string">"bookName"</span>));</span><br><span class="line">System.out.println(redisTemplate.opsForHash().get(HASH_PREFIX_KEY,<span class="string">"bookName"</span>));</span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-9-HLen"><a href="#2-9-HLen" class="headerlink" title="2.9 HLen"></a>2.9 <code>HLen</code></h5><p>获取给定散列包含的字段数量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(redisTemplate.opsForHash().size(HASH_PREFIX_KEY));</span><br><span class="line">System.out.println(redisTemplate.opsForHash().size(<span class="string">"not-exist-key"</span>));<span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-10-HMSet-和-HMGet"><a href="#2-10-HMSet-和-HMGet" class="headerlink" title="2.10 HMSet 和 HMGet"></a>2.10 <code>HMSet</code> 和 <code>HMGet</code></h5><p><code>HMSet</code> ：一次为多个字段设置值，如果给定的字段已经存在散列中，则新值覆盖旧址</p>
+<p><code>HMGet</code> ：一次获取多个字段的值</p>
+<ul>
+<li>客户端在执行这条<code>HMSet</code>命令时只需要与<code>Redis</code>服务器进行一次通信，而上面的4条<code>HSet</code>命令则需要客户端与<code>Redis</code>服务器进行4次通信，所以<code>HMSet</code>的执行速度要比执行多条<code>HSet</code>快得多。</li>
+<li><code>HMGet</code>命令提供的字段或者散列不存在，那么<code>HMGet</code>命令将返回空值作为结果。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String,String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">map.put(<span class="string">"author"</span>,<span class="string">"nightGu.No2"</span>);</span><br><span class="line">map.put(<span class="string">"age"</span>,<span class="string">"18"</span>);</span><br><span class="line">map.put(<span class="string">"sex"</span>,<span class="string">"female"</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForHash().putAll(HASH_PREFIX_KEY,map);</span><br><span class="line"></span><br><span class="line">Collection collection  = <span class="keyword">new</span> ArrayList();</span><br><span class="line">collection.add(<span class="string">"author"</span>);</span><br><span class="line">collection.add(<span class="string">"age"</span>);</span><br><span class="line">collection.add(<span class="string">"sex"</span>);</span><br><span class="line">collection.add(<span class="string">"not-exist-key"</span>);</span><br><span class="line">List&lt;String&gt; valList = redisTemplate.opsForHash().multiGet(HASH_PREFIX_KEY,collection);</span><br><span class="line"></span><br><span class="line">valList.stream().forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+
+
+<!--more-->
+
+<h5 id="2-11-HKeys、HVals、HGetAll"><a href="#2-11-HKeys、HVals、HGetAll" class="headerlink" title="2.11 HKeys、HVals、HGetAll"></a>2.11 <code>HKeys</code>、<code>HVals</code>、<code>HGetAll</code></h5><p><code>HKeys</code>：获取散列的所有字段</p>
+<p><code>HVals</code>：获取散列的所有值</p>
+<p><code>HGetAll</code>：获取散列的所有字段和值</p>
+<ul>
+<li>如果用户给定的散列并不存在，那么<code>HKeys</code>、<code>HVals</code>和<code>HGetAll</code>都将返回一个空列表</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; keySet = redisTemplate.opsForHash().keys(HASH_PREFIX_KEY);</span><br><span class="line">keySet.stream().forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">List&lt;Object&gt; valList = redisTemplate.opsForHash().values(HASH_PREFIX_KEY);</span><br><span class="line">valList.stream().forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">Map&lt;String,Object&gt; entryMap = redisTemplate.opsForHash().entries(HASH_PREFIX_KEY);</span><br><span class="line">System.out.println(entryMap);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="散列和字符串比较"><a href="#散列和字符串比较" class="headerlink" title="散列和字符串比较"></a>散列和字符串比较</h4><h5 id="散列和字符串各自优点"><a href="#散列和字符串各自优点" class="headerlink" title="散列和字符串各自优点"></a>散列和字符串各自优点</h5><ol>
+<li><p>字符串键命令提供的操作比散列键命令更为丰富。</p>
+<p>虽然散列键命令和字符串键命令在部分功能上有重合的地方，但是字符串键命令提供的操作比散列键命令更为丰富，比如，字符串能够使用<code>SetRange</code>命令和<code>GetRange</code>命令设置或者读取字符串值的其中一部分，或者使用<code>append</code>命令将新内容追加到字符串值的末尾，而散列键并不支持这些操作。</p>
+<!--more-->
+</li>
+<li><p><code>Redis</code>的键过期功能（在指定时间到达时，自动删除指定的键）。</p>
+<p>因为键过期功能针对的是整个键，用户无法为散列中的不同字段设置不同的过期时间，所以当一个散列键过期的时候，它包含的所有字段和值都将被删除。</p>
+<!--more-->
+</li>
+<li><p>键的创建数量。</p>
+<p><code>Redis</code> 键数量增多带来的问题：</p>
+<ul>
+<li><p>为了对数据库以及数据库键的使用情况进行统计，<code>Redis</code>会为每个数据库键存储一些额外的信息，并因此带来一些额外的内存消耗。对于单个数据库键来说，这些额外的内存消耗几乎可以忽略不计，但是当数据库键的数量达到上百万、上千万甚至更多的时候，这些额外的内存消耗就会变得比较可观。</p>
+<!--more-->
+</li>
+<li><p>在一定条件下，对于相同的数据，使用散列键进行存储比使用字符串键存储要节约一半以上的内存，有时候甚至会更多。</p>
+<p>当散列包含的字段数量比较少的时候，<code>Redis</code>就会使用特殊的内存优化结构去存储散列中的字段和值。与字符串键相比，这种内存优化结构存储相同数据所需要的内存要少得多。使用内存优化结构的散列越多，内存优化结构的效果也就越明显。</p>
+<!--more-->
+</li>
+<li><p>除了需要耗费更多内存之外，更多的数据库键也需要占用更多的CPU。每当<code>Redis</code>需要对数据库中的键进行处理时，数据库包含的键越多，进行处理所需的CPU资源就会越多，处理所耗费的时间也会越长，典型的情况包括：</p>
+<ul>
+<li>统计数据库和数据库键的使用情况。</li>
+<li>对数据库执行持久化操作，或者根据持久化文件还原数据库。</li>
+<li>通过模式匹配在数据库中查找某个键，或者执行类似的查找操作。这些操作的执行时间都会受到数据库键数量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<!--more-->
+
+<h5 id="散列和字符串的选择"><a href="#散列和字符串的选择" class="headerlink" title="散列和字符串的选择"></a>散列和字符串的选择</h5><ul>
+<li><p>如果程序需要为每个数据项单独设置过期时间，那么使用字符串键。</p>
+</li>
+<li><p>如果程序需要对数据项执行诸如<code>SetRange</code>、<code>GetRange</code>或者<code>append</code>等操作，那么优先考虑使用字符串键。当然，用户也可以选择把数据存储在散列中，然后将类似<code>SetRange</code>、<code>GetRange</code>这样的操作交给客户端执行。</p>
+</li>
+<li><p>如果程序需要存储的数据项比较多，并且你希望尽可能地减少存储数据所需的内存，就应该优先考虑使用散列键。</p>
+</li>
+<li><p>如果多个数据项在逻辑上属于同一组或者同一类，那么应该优先考虑使用散列键。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/29/SpringBoot+Redis-String%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%20/" rel="next" title="SpringBoot+Redis-String类型基本使用方法 ">
+                <i class="fa fa-chevron-left"></i> SpringBoot+Redis-String类型基本使用方法 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">nightGu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash-类型基本使用"><span class="nav-number">2.</span> <span class="nav-text">Hash 类型基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-HSet"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 HSet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-HSetNX"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 HSetNX</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-HGet"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 HGet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-HIncrBy"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 HIncrBy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-HIncrByFloat"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 HIncrByFloat</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-6-HStrLen"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 HStrLen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-7-HExists"><span class="nav-number">2.7.</span> <span class="nav-text">2.7 HExists</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-8-HDel"><span class="nav-number">2.8.</span> <span class="nav-text">2.8 HDel</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-9-HLen"><span class="nav-number">2.9.</span> <span class="nav-text">2.9 HLen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-10-HMSet-和-HMGet"><span class="nav-number">2.10.</span> <span class="nav-text">2.10 HMSet 和 HMGet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-11-HKeys、HVals、HGetAll"><span class="nav-number">2.11.</span> <span class="nav-text">2.11 HKeys、HVals、HGetAll</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#散列和字符串比较"><span class="nav-number">3.</span> <span class="nav-text">散列和字符串比较</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#散列和字符串各自优点"><span class="nav-number">3.1.</span> <span class="nav-text">散列和字符串各自优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#散列和字符串的选择"><span class="nav-number">3.2.</span> <span class="nav-text">散列和字符串的选择</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">nightGu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

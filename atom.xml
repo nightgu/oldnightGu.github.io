@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-29T08:18:02.722Z</updated>
+  <updated>2020-03-29T06:32:22.007Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SpringBoot+Redis-Hash类型基本使用方法</title>
+    <link href="http://yoursite.com/2020/03/29/SpringBoot+Redis-Hash%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2020/03/29/SpringBoot+Redis-Hash%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</id>
+    <published>2020-03-29T08:50:40.597Z</published>
+    <updated>2020-03-29T06:32:22.007Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;这篇文章整理&lt;code&gt;Redis&lt;/code&gt;  散列类型 的使用。基于&lt;code&gt;spring boot&lt;/code&gt; + &lt;code&gt;redis&lt;/code&gt; 构建项目，&lt;code&gt;lettuce&lt;/code&gt;  作为 &lt;code&gt;redis&lt;/code&gt; 客户端。  &lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>SpringBoot+Redis-String类型基本使用方法 </title>
