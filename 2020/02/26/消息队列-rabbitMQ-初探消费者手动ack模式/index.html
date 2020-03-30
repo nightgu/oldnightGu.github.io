@@ -86,7 +86,7 @@
 <meta name="description" content="前言项目开发过程中，消息队列常常会被使用，用于业务解耦、异步、削峰等等。使用消息队列，不仅仅用起来就行了，也要思考关于使用消息队列后续的问题。比如消息队列如何高可用？数据如何可靠性传输？如何保证消息的顺序？等等问题。 本篇文章整理一下关于RabbitMQ 消费者 保证数据 可靠性传输（消费端弄丢了数据怎么办？） 介绍RabbitMQ是实现 AMQP（高级消息队列协议）的消息中间件的一种，主要是为了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息队列-rabbitMQ-初探消费者手动ack模式">
-<meta property="og:url" content="http://nightgu.xyz/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:url" content="http://blog.nightgu.xyz/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="无处安放的灵魂">
 <meta property="og:description" content="前言项目开发过程中，消息队列常常会被使用，用于业务解耦、异步、削峰等等。使用消息队列，不仅仅用起来就行了，也要思考关于使用消息队列后续的问题。比如消息队列如何高可用？数据如何可靠性传输？如何保证消息的顺序？等等问题。 本篇文章整理一下关于RabbitMQ 消费者 保证数据 可靠性传输（消费端弄丢了数据怎么办？） 介绍RabbitMQ是实现 AMQP（高级消息队列协议）的消息中间件的一种，主要是为了">
 <meta property="og:locale" content="zh_CN">
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://nightgu.xyz/2020/02/26/消息队列-rabbitMQ-初探消费者手动ack模式/"/>
+  <link rel="canonical" href="http://blog.nightgu.xyz/2020/02/26/消息队列-rabbitMQ-初探消费者手动ack模式/"/>
 
 
 
@@ -246,7 +246,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nightgu.xyz/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://blog.nightgu.xyz/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="nightGu">

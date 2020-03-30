@@ -86,7 +86,7 @@
 <meta name="description" content="这篇文章本来是整理支付网关项目的工厂模式设计的。 很巧，virus_liu发了一篇关于“if-else 策略模式优化”的文章，看完发现，原来支付网关项目同样引入了策略模式。故此，凭着记忆回忆一下支付网关的代码设计。 前言支付网关最基本的几个功能包括银行卡认证、单笔扣款、交易查询、单笔付款、支付签约等等，这里不会细说（笔者忘得差不多了^_^）。作为一个支付网关，会有很多渠道进行上述的功能实现，比如银">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式-策略模式-if-else优化引发的支付网关代码设计思考">
-<meta property="og:url" content="http://nightgu.xyz/2020/01/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-if-else%E4%BC%98%E5%8C%96%E5%BC%95%E5%8F%91%E7%9A%84%E6%94%AF%E4%BB%98%E7%BD%91%E5%85%B3%E4%BB%A3%E7%A0%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/index.html">
+<meta property="og:url" content="http://blog.nightgu.xyz/2020/01/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-if-else%E4%BC%98%E5%8C%96%E5%BC%95%E5%8F%91%E7%9A%84%E6%94%AF%E4%BB%98%E7%BD%91%E5%85%B3%E4%BB%A3%E7%A0%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="无处安放的灵魂">
 <meta property="og:description" content="这篇文章本来是整理支付网关项目的工厂模式设计的。 很巧，virus_liu发了一篇关于“if-else 策略模式优化”的文章，看完发现，原来支付网关项目同样引入了策略模式。故此，凭着记忆回忆一下支付网关的代码设计。 前言支付网关最基本的几个功能包括银行卡认证、单笔扣款、交易查询、单笔付款、支付签约等等，这里不会细说（笔者忘得差不多了^_^）。作为一个支付网关，会有很多渠道进行上述的功能实现，比如银">
 <meta property="og:locale" content="zh_CN">
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://nightgu.xyz/2020/01/19/设计模式-策略模式-if-else优化引发的支付网关代码设计思考/"/>
+  <link rel="canonical" href="http://blog.nightgu.xyz/2020/01/19/设计模式-策略模式-if-else优化引发的支付网关代码设计思考/"/>
 
 
 
@@ -246,7 +246,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nightgu.xyz/2020/01/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-if-else%E4%BC%98%E5%8C%96%E5%BC%95%E5%8F%91%E7%9A%84%E6%94%AF%E4%BB%98%E7%BD%91%E5%85%B3%E4%BB%A3%E7%A0%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/">
+    <link itemprop="mainEntityOfPage" href="http://blog.nightgu.xyz/2020/01/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-if-else%E4%BC%98%E5%8C%96%E5%BC%95%E5%8F%91%E7%9A%84%E6%94%AF%E4%BB%98%E7%BD%91%E5%85%B3%E4%BB%A3%E7%A0%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="nightGu">
