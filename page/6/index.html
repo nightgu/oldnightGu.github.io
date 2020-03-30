@@ -327,7 +327,7 @@
 <p>拉链法：将链表和数组相结合。也就是说创建一个链表数组，数组中每一格就是一个链表。若遇到哈希冲突，则将冲突的值加到链表中即可。</p>
 </blockquote>
 <h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>简介里提到<code>HashMap</code>底层基于散列算法（拉链式）实现的，并在 <code>JDK 1.8</code> 中引入了红黑树优化过长的链表。如下图。</p>
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/HashMap1.jpg" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/collection/collection-hashMap-1.jpg" alt=""></p>
 <p>在增、删、查等操作时，首先要定位到元素的所在桶的位置，之后再从链表中定位该元素。</p>
 <p>比如我们要查询上图结构中是否包含元素<code>35</code>，步骤如下：</p>
 <ol>

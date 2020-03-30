@@ -90,13 +90,13 @@
 <meta property="og:site_name" content="无处安放的灵魂">
 <meta property="og:description" content="想了解一下synchronize和volatile的区别，看资料讲解又涉及到Java内存模型的概念，之前对这块内容不是很深，索性这篇文章整理一下Java内存模型。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/JMM1.jpg">
-<meta property="og:image" content="https://github.com/nightGu/blogImg/raw/master/pg/JMM2.jpg">
+<meta property="og:image" content="http://cs.nightgu.xyz/java/java-jmm-1.jpg">
+<meta property="og:image" content="http://cs.nightgu.xyz/java/java-jmm-2.jpg">
 <meta property="article:published_time" content="2020-01-12T12:23:47.892Z">
-<meta property="article:modified_time" content="2020-01-13T14:06:14.111Z">
+<meta property="article:modified_time" content="2020-03-30T11:21:56.539Z">
 <meta property="article:author" content="nightGu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/nightGu/blogImg/raw/master/pg/JMM1.jpg">
+<meta name="twitter:image" content="http://cs.nightgu.xyz/java/java-jmm-1.jpg">
 
 
 
@@ -326,7 +326,7 @@
 
 <h5 id="Java内存模型内部原理"><a href="#Java内存模型内部原理" class="headerlink" title="Java内存模型内部原理"></a>Java内存模型内部原理</h5><p>java内存模型规定了所有的变量都存储在主内存（Main Memory）中（虚拟机内存的一部分）。每个线程拥有自己的工作内存（Working Memory），线程的工作内存中保存了被该线程使用到的变量的主内存副本拷贝，线程对变量的所有操作（读取、赋值等）都必须在工作内存中进行，而不能直接读写主内存中的变量。</p>
 <p>不同线程之间也无法直接访问对方工作内存中的变量，线程间变量值得传递均需要通过主内存来完成，线程、主内存、工作内存三者的交互关系如下图：</p>
-<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/JMM1.jpg" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/java/java-jmm-1.jpg" alt=""></p>
 <p>Java内存区域中虚拟机栈（线程私有），堆（公共）。从定义上来看，主内存主要对应于Java堆中的对象实例数据部分，而工作内存则对应于Java虚拟机栈中的部分区域。</p>
 <!-- more -->
 
@@ -348,7 +348,7 @@
 <li><code>methodTwo()</code>创建一个名为<code>localVariable3</code>的本地变量。这个成员变量是一个指向一个<code>Integer</code>对象的对象引用。这个方法设置<code>localVariable3</code>引用指向一个新的<code>Integer</code>实例。在执行<code>methodTwo</code>方法时，<code>localVariable3</code>引用将会在每个线程中存放一份拷贝。这两个<code>Integer</code>对象实例化将会被存储堆上，但是每次执行这个方法时，这个方法都会创建一个新的<code>Integer</code>对象，两个线程执行这个方法将会创建两个不同的<code>Integer</code>实例（下图的Object1和Object5）。</li>
 <li><code>MySharedObject</code>类中的两个<code>long</code>类型的成员变量是基本类型的。因为，这些变量是成员变量，所以它们任然随着该对象存放在堆上，仅有本地变量存放在线程栈上。</li>
 </ol>
-<p><img src="https://github.com/nightGu/blogImg/raw/master/pg/JMM2.jpg" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/java/java-jmm-2.jpg" alt=""></p>
 <h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><blockquote>
 <p><a href="http://ifeve.com/java-memory-model-6/" target="_blank" rel="noopener">http://ifeve.com/java-memory-model-6/</a></p>
 <p>《深入理解Java虚拟机》 周志明著</p>

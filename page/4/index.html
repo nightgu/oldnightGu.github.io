@@ -403,7 +403,7 @@
 <ul>
 <li>周期性执行任务的场景，需要限制线程数量的场景</li>
 </ul>
-<h5 id="线程池的状态"><a href="#线程池的状态" class="headerlink" title="线程池的状态"></a>线程池的状态</h5><p><img src="https://github.com/nightGu/blogImg/raw/master/pg/threadPool_2.jpg" alt="img"></p>
+<h5 id="线程池的状态"><a href="#线程池的状态" class="headerlink" title="线程池的状态"></a>线程池的状态</h5><p><img src="http://cs.nightgu.xyz/thread/thread-pool-2.jpg" alt=""></p>
 <h6 id="Running"><a href="#Running" class="headerlink" title="Running"></a>Running</h6><ul>
 <li>该状态的线程池会接收新任务，并处理阻塞队列中的任务;</li>
 <li>调用线程池的<code>shutdown()</code>方法，可以切换到 <code>SHUTDOWN</code>状态;</li>
@@ -582,7 +582,7 @@
 
 
 <p>理解 <code>execute</code>流程</p>
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/threadPool_1.jpg" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/thread/thread-pool-1.jpg" alt=""></p>
 <p>提交一个任务</p>
 <ul>
 <li>线程池里存活的核心线程数小于线程数<code>corePoolSize</code>时，线程池会创建一个核心线程去处理提交的任务；</li>

@@ -90,12 +90,12 @@
 <meta property="og:site_name" content="无处安放的灵魂">
 <meta property="og:description" content="前言经常在 interview 过程中被询问到 线程池了解多少？具体能否讲讲各个参数的作用？等等问题。在平时的项目中，根据业务场景使用到线程池，同时要确定具体使用哪种类型的线程池，采用什么策略方案进行处理，这些都是需要考虑的。 概念线程池，顾名思义就是一个管理线程的池子。线程池有什么好处呢？在 java 的世界里，线程也是一个对象，创建线程对象经过类加载过程，最后 GC垃圾 回收再销毁这个线程对象">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/threadPool_1.jpg">
+<meta property="og:image" content="http://cs.nightgu.xyz/thread/thread-pool-1.jpg">
 <meta property="article:published_time" content="2020-02-23T10:48:19.424Z">
-<meta property="article:modified_time" content="2020-02-23T13:21:14.320Z">
+<meta property="article:modified_time" content="2020-03-30T11:34:54.174Z">
 <meta property="article:author" content="nightGu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/threadPool_1.jpg">
+<meta name="twitter:image" content="http://cs.nightgu.xyz/thread/thread-pool-1.jpg">
 
 
 
@@ -348,7 +348,7 @@
 
 
 <p>理解 <code>execute</code>流程</p>
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/threadPool_1.jpg" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/thread/thread-pool-1.jpg" alt=""></p>
 <p>提交一个任务</p>
 <ul>
 <li>线程池里存活的核心线程数小于线程数<code>corePoolSize</code>时，线程池会创建一个核心线程去处理提交的任务；</li>

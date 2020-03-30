@@ -482,41 +482,41 @@
 
 <h5 id="单字段"><a href="#单字段" class="headerlink" title="单字段"></a>单字段</h5><h6 id="查询条件为name"><a href="#查询条件为name" class="headerlink" title="查询条件为name"></a>查询条件为<code>name</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> ;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_1.png" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-1.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
 <h6 id="查询条件为age"><a href="#查询条件为age" class="headerlink" title="查询条件为age"></a>查询条件为<code>age</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_2.png" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-2.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
 <h6 id="查询条件为-sex"><a href="#查询条件为-sex" class="headerlink" title="查询条件为 sex"></a>查询条件为 <code>sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_3.png" alt="img"></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-3.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
 <h5 id="双字段"><a href="#双字段" class="headerlink" title="双字段"></a>双字段</h5><h6 id="查询条件为-name-and-age"><a href="#查询条件为-name-and-age" class="headerlink" title="查询条件为 name and age"></a>查询条件为 <code>name and age</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_4.png" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-4.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
 <p>如果 <code>name and age</code> 切换先后顺序。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span> <span class="keyword">and</span> <span class="keyword">name</span> = <span class="string">'nightGu'</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_5.png" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-5.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
 <h6 id="查询条件为-age-and-sex"><a href="#查询条件为-age-and-sex" class="headerlink" title="查询条件为 age and sex"></a>查询条件为 <code>age and sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_6.png" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-6.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
 <h6 id="查询条件为-name-and-sex"><a href="#查询条件为-name-and-sex" class="headerlink" title="查询条件为 name and sex"></a>查询条件为 <code>name and sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_7.png" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-7.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
 <h5 id="三字段"><a href="#三字段" class="headerlink" title="三字段"></a>三字段</h5><h6 id="查询条件为-name-and-age-and-sex"><a href="#查询条件为-name-and-age-and-sex" class="headerlink" title="查询条件为  name and age and sex"></a>查询条件为  name and age and sex</h6><p>这是 联合索引 最正统的用法。肯定是有效的。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> age = <span class="number">18</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_8.png" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-8.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
 <h5 id="OR-连接符"><a href="#OR-连接符" class="headerlink" title="OR 连接符"></a>OR 连接符</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">or</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/index_9.png" alt=""></p>
+<p><img src="http://cs.nightgu.xyz/db/db-union-index-9.png" alt=""></p>
 <p>通过 <code>key</code> 可以看出，联合索 <strong>无效</strong>。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>针对 联合索引 的使用，必须满足 最左前缀原则，即 以最左边的为起点。当创建 <code>（a,b,c）</code>联合索引时，相当于创建了以 <code>a</code> 为 起点的 其他联合索引，如 <code>（a,b）、（a,b,c）</code>等。</p>
 
