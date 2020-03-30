@@ -243,6 +243,244 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/08/Algorithms-%E5%88%86%E6%B2%BB%E7%AD%96%E7%95%A5%E3%80%81%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%8E%E8%B4%AA%E5%A9%AA%E7%AD%96%E7%95%A5%E6%80%9D%E6%83%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/08/Algorithms-%E5%88%86%E6%B2%BB%E7%AD%96%E7%95%A5%E3%80%81%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%8E%E8%B4%AA%E5%A9%AA%E7%AD%96%E7%95%A5%E6%80%9D%E6%83%B3/" itemprop="url">Algorithms-分治策略、动态规划与贪婪策略思想</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-08T21:45:22+08:00">
+                2020-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>本篇文章整理一下分治策略、动态规划以及贪婪策略的思想，对此有个初步了解，便于在刷<code>leetCode</code>时可以加深理解。</p>
+<h4 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h4><h5 id="分而治之"><a href="#分而治之" class="headerlink" title="分而治之"></a>分而治之</h5><p>在计算机科学中，分治法是构建基于多项分支递归的一种很重要的算法范式。字面上的解释是「分而治之」，就是把一个复杂的问题分成两个或更多的相同或相似的子问题，直到最后子问题可以简单的直接求解，原问题的解即子问题的解的合并。</p>
+<p>在分治策略中，我们递归的求解一个问题，在每一层递归应用如下三个步骤：</p>
+<ul>
+<li><p>拆分（Divide）:将问题规划分为一些子问题，子问题的形式和原问题一样，只是规模更小。</p>
+</li>
+<li><p>求解（Conquer）:递归地求解出子问题。如果子问题的规模足够小，则停止递归，直接求解。</p>
+</li>
+<li><p>合并（Combine）：将子问题的解组合成原问题的解。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/nightGu/blogImg/master/pg/DivideAndDP_1.jpg" alt="img"></p>
+<p>当子问题足够大，需要递归求解时，称为 递归情况。</p>
+<p>当子问题足够小，不需要递归求解，称为 基本情况。</p>
+<p>具体案例可以看快排和归并排序算法。</p>
+<h5 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h5><p>动态规划（dynamic programming）与分治法很相似，或者说动态规划使用的就是分而治之的策略，只不过它比一般的分治策略更加高明，通过组合子问题的解来解决原问题（这里的<code>programming</code> 表示“表格法”，并非编写计算机编程）。</p>
+<blockquote>
+<p>分治法是将问题拆分一个个互补交互的子问题，递归的求解子问题，然后将它们的解组合起来，最后求出原问题的解。</p>
+<p>动态规划应用于子问题重叠的情况，即不同的子问题具有公共的子子问题（子问题递归，划分为子子问题）。</p>
+</blockquote>
+<p>动态规划通常用来求解最优化问题，这类问题可以有很多可行解，每个解都有一个值，我们希望找到具有最优值（最大或最小）的解。这样的解为问题的一个最优解。</p>
+<p>通常按照如下4步骤来设计一个动态规划算法：</p>
+<ul>
+<li>刻画一个最优解的结构特征。</li>
+<li>递归地定义最优解的值。</li>
+<li>计算最优解的值，通常采用自底而上的方法。</li>
+<li>利用计算出的信息构造一个最优解。</li>
+</ul>
+<p>动态规划策略的特点就是根据问题具体情况对我们的选择进行动态调整，并且在每一步调整中做出的都是一个最优选择（因为做出选择所需要的所有信息都已经知道），而且该最优选择与对子问题的最优解组合获得原问题的最优解。因此，动态规划策略要能够成功，需要注意原问题的两点：</p>
+<ol>
+<li>最优子结构</li>
+<li>重叠子问题</li>
+</ol>
+<h6 id="最优子结构"><a href="#最优子结构" class="headerlink" title="最优子结构"></a>最优子结构</h6><p>不同问题的最优子结构也不同，在考虑动态规划时需要考虑的因素包括：</p>
+<ol>
+<li>最优解里需要解决的子问题数量有多少个？</li>
+<li>在判断使用哪些子问题时需要进行多少选择？</li>
+</ol>
+<h6 id="重叠子问题"><a href="#重叠子问题" class="headerlink" title="重叠子问题"></a>重叠子问题</h6><p>重叠子问题指的是一个递归解决方案里包括的子问题数量虽然很多，但不同子问题的数量很少，也就是说，少量的子问题被重复解决了很多次。</p>
+<h5 id="贪婪选择"><a href="#贪婪选择" class="headerlink" title="贪婪选择"></a>贪婪选择</h5><p>前面提到的动态规划是对分治思路的优化，在发现分解出来的子问题有重叠时，使用由底而上的策略避免重复计算，从而提升了算法的效率，但避免重复计算并不是最高明的策略。动态规划的一个关键特点是在每次做选择前，将所有选择的结果进行了计算，在计算的基础上选择能达到最优解的选项。如果选项数量据大的情况下将不堪重负（比如下棋每步可能走出的棋路）。</p>
+<p>在每次需要做出选择时，贪婪算法总是选择当前看上去最好的那个，希望这种贪婪的行为能够引导到全局最优。其实，贪婪算法不是一种固定的算法，只是一种思想，目的不是找出全部解，而是找出一种可行解（在一定的条件下，贪婪算法找出的将是最优解）。</p>
+<p>贪婪策略也是一种分治策略（大问题化为小问题，用最优的方式解决小问题的解获得大问题的解）。但与一般分治不同的是，贪婪策略每步解决的子问题数量只有一个。</p>
+<p>贪婪策略要想获得最优解，必须满足下面的两个条件：</p>
+<ol>
+<li>每个大问题的最优解里面包括下一级小问题的最优解。（最优子结构）</li>
+<li>通过每一步的最优选择，可以得到全局最优解（每个小问题可由贪婪选择获得）。（贪婪选择属性）</li>
+</ol>
+<p>也就是说，只有在一个问题具有最优子结构和贪婪选择属性的时候，使用贪婪策略才能获得最优结果。因此，在使用贪婪策略的时候，一般处理如下：</p>
+<ul>
+<li>发掘问题的最优子结构<ul>
+<li>对输入进行某种处理，使其形成一个贪婪次序</li>
+<li>如果是动态数据，优先使用队列。</li>
+</ul>
+</li>
+<li>构造递归，将问题的解答归结为子问题的解答。</li>
+<li>证明最好子问题的选择是一个贪婪选择。<ul>
+<li>查看全局最优解决方案。</li>
+<li>如果该方案包括贪婪选择属性，则结束。</li>
+<li>否则，修改最优解决方案使其包括贪婪选择属性，而结果仍是最优。</li>
+</ul>
+</li>
+<li>证明贪婪选择后，只剩下一个非空子问题。</li>
+<li>构造递归的贪婪算法。（根据需要，将递归算法转换为循环算法）</li>
+</ul>
+<p>使用贪婪策略的典型步骤：</p>
+<ol>
+<li>将原优化问题表述为一个做出一个选择后剩下唯一一个子问题的形式。</li>
+<li>证明在所有的最优选择里面总有一个是贪婪选择。</li>
+<li>证明贪婪选择加上对剩下子问题的最优解就是原问题的最优解。</li>
+</ol>
+<h5 id="标准分治、动态规划与贪婪选择的比较"><a href="#标准分治、动态规划与贪婪选择的比较" class="headerlink" title="标准分治、动态规划与贪婪选择的比较"></a>标准分治、动态规划与贪婪选择的比较</h5><table>
+<thead>
+<tr>
+<th></th>
+<th>标准分治</th>
+<th>动态规划</th>
+<th>贪婪选择</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用类型</td>
+<td>通用问题</td>
+<td>优化问题</td>
+<td>优化问题</td>
+</tr>
+<tr>
+<td>子问题结构</td>
+<td>每个子问题不同</td>
+<td>很多子问题重复</td>
+<td>只有一个子问题</td>
+</tr>
+<tr>
+<td>最优子结构</td>
+<td>NA</td>
+<td>必须满足</td>
+<td>必须满足</td>
+</tr>
+<tr>
+<td>子问题数</td>
+<td>全部子问题都要解决</td>
+<td>全部子问题都要解决</td>
+<td>只要解决一个子问题</td>
+</tr>
+<tr>
+<td>子问题在最优解里</td>
+<td>全部</td>
+<td>部分</td>
+<td>部分</td>
+</tr>
+<tr>
+<td>选择和求解次序</td>
+<td>先选择后解决子问题</td>
+<td>先解决子问题后选择</td>
+<td>先选择后解决子问题</td>
+</tr>
+</tbody></table>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><blockquote>
+<p>算法之道</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-rabbitMQ-%E5%88%9D%E6%8E%A2%E6%B6%88%E8%B4%B9%E8%80%85%E6%89%8B%E5%8A%A8ack%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -430,241 +668,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/24/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="nightGu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无处安放的灵魂">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/24/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="url">线程池-初探几种常用线程池的使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-24T21:47:03+08:00">
-                2020-02-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>前一篇文章整理了线程池的概念、结构、创建以及任务执行流程、策略类型，在实际开发过程中，或许我们接触更多的是常用线程池的使用。</p>
-<h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h4><h5 id="线程池的工作队列"><a href="#线程池的工作队列" class="headerlink" title="线程池的工作队列"></a>线程池的工作队列</h5><p>在<code>ThreadPoolExecutor</code> 构造函数中 有一个 <code>BlockingQueue&lt;Runnable&gt; workQueue</code> 参数，该参数表示 存放任务的阻塞队列。</p>
-<p><code>juc</code> 包下提供了5 种工作队列。</p>
-<ul>
-<li><p><code>ArrayBlockingQueue</code>      有界队列</p>
-<p><code>ArrayBlockingQueue</code>  是一个用数组实现的有界阻塞队列，按FIFO排序。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>LinkedBlockingQueue</code>      可设置容量队列</p>
-<p><code>LinkedBlockingQueue</code>  基于链表结构的阻塞队列，按FIFO排序任务，容量可以选择进行设置，不设置的话，将是一个无边界的阻塞队列，最大长度为 <code>Integer.MAX_VALUE</code>，吞吐量通常要高于<code>ArrayBlockingQuene</code> ，常用的线程池之一 <code>newFixedThreadPool</code>（固定数目线程的线程池）使用了这个队列。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>DelayQueue</code>        延迟队列</p>
-<p><code>DelayQueue</code>  是一个任务定时周期的延迟执行的队列。根据指定的执行时间从小到大排序，否则根据插入到队列的先后排序。常用的线程池之一 <code>newScheduledThreadPool</code>（定时及周期执行的线程池）使用了这个队列。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>PriorityBlockingQueue</code>        优先级队列</p>
-<p><code>PriorityBlockingQueue</code>  是具有优先级的无界阻塞队列；</p>
-</li>
-</ul>
-<ul>
-<li><p><code>SynchronousQueue</code>        同步队列</p>
-<p><code>SynchronousQueue</code> 是一个不存储元素的阻塞队列，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态，吞吐量通常要高于 <code>LinkedBlockingQuene</code>，<code>newCachedThreadPool</code>  （可缓存线程的线程池）使用了这个队列。</p>
-</li>
-</ul>
-<h5 id="常用线程池"><a href="#常用线程池" class="headerlink" title="常用线程池"></a>常用线程池</h5><p><code>Executors</code> 工具类 提供了 四种常用的线程池。</p>
-<ul>
-<li><code>newFixedThreadPool</code> ：固定数目线程的线程池</li>
-<li><code>newCachedThreadPool</code> ：可缓存线程的线程池</li>
-<li><code>newSingleThreadExecutor</code> ：单线程的线程池</li>
-<li><code>newScheduledThreadPool</code> ：定时及周期执行的线程池</li>
-</ul>
-<h6 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a><code>newFixedThreadPool</code></h6><p>固定数目线程的线程池</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads, ThreadFactory threadFactory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(),</span><br><span class="line">                                  threadFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>从静态方法可以看出：</p>
-<ol>
-<li>核心线程数和最大线程数大小一样</li>
-<li>没有非空闲时间，即<code>keepAliveTime</code> = 0</li>
-<li>阻塞队列为无界队列 <code>LinkedBlockingQueue</code></li>
-</ol>
-<ul>
-<li><code>newFixedThreadPool</code> 使用了无界的阻塞队列 <code>LinkedBlockingQueue</code>，如果线程获取一个任务后，任务的执行时间比较长，会导致队列的任务越积越多，导致机器内存使用不停飙升， 最终导致<code>OOM</code>。</li>
-<li><code>newFixedThreadPool</code> 适用于处理CPU密集型的任务，确保CPU在长期被工作线程使用的情况下，尽可能的少的分配线程，即适用执行长期的任务。</li>
-</ul>
-<h6 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a><code>newCachedThreadPool</code></h6><p>可缓存线程的线程池</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">(ThreadFactory threadFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                      <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;(),</span><br><span class="line">                                      threadFactory);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从静态方法可以看出：</p>
-<ol>
-<li>核心线程数为 0</li>
-<li>最大线程数为 <code>Integer.MAX_VALUE</code></li>
-<li>阻塞队列是 <code>SynchronousQueue</code></li>
-<li>非核心线程空闲存活时间为60秒</li>
-</ol>
-<ul>
-<li>当提交任务的速度大于处理任务的速度时，每次提交一个任务，就必然会创建一个线程。极端情况下会创建过多的线程，耗尽 CPU 和内存资源。由于空闲 60 秒的线程会被终止，长时间保持空闲的 <code>CachedThreadPool</code> 不会占用任何资源。</li>
-<li>用于并发执行大量短期的小任务。</li>
-</ul>
-<h6 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a><code>newSingleThreadExecutor</code></h6><p>单线程的线程池</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newSingleThreadExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> FinalizableDelegatedExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>核心线程数为1</li>
-<li>最大线程数也为1</li>
-<li>阻塞队列是<code>LinkedBlockingQueue</code></li>
-<li><code>keepAliveTime</code>为0</li>
-</ol>
-<ul>
-<li>适用于串行执行任务的场景，一个任务一个任务地执行。</li>
-</ul>
-<h6 id="ScheduledThreadPoolExecutor"><a href="#ScheduledThreadPoolExecutor" class="headerlink" title="ScheduledThreadPoolExecutor"></a><code>ScheduledThreadPoolExecutor</code></h6><p>定时及周期执行的线程池</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public ScheduledThreadPoolExecutor(int corePoolSize) &#123;</span><br><span class="line">    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,</span><br><span class="line">          new DelayedWorkQueue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ol>
-<li>最大线程数为    <code>Integer.MAX_VALUE</code></li>
-<li>阻塞队列是 <code>DelayedWorkQueue</code></li>
-<li><code>keepAliveTime</code> = 0</li>
-<li><code>scheduleAtFixedRate()</code> ：按某种速率周期执行</li>
-<li><code>scheduleWithFixedDelay()</code>：在某个延迟后执行</li>
-</ol>
-<ul>
-<li>周期性执行任务的场景，需要限制线程数量的场景</li>
-</ul>
-<h5 id="线程池的状态"><a href="#线程池的状态" class="headerlink" title="线程池的状态"></a>线程池的状态</h5><p><img src="https://github.com/nightGu/blogImg/raw/master/pg/threadPool_2.jpg" alt="img"></p>
-<h6 id="Running"><a href="#Running" class="headerlink" title="Running"></a>Running</h6><ul>
-<li>该状态的线程池会接收新任务，并处理阻塞队列中的任务;</li>
-<li>调用线程池的<code>shutdown()</code>方法，可以切换到 <code>SHUTDOWN</code>状态;</li>
-<li>调用线程池的<code>shutdownNow()</code>方法，可以切换到<code>STOP</code>状态;</li>
-</ul>
-<h6 id="Shutdown"><a href="#Shutdown" class="headerlink" title="Shutdown"></a>Shutdown</h6><ul>
-<li>该状态的线程池不会接收新任务，但会处理阻塞队列中的任务；</li>
-<li>队列为空，并且线程池中执行的任务也为空,进入<code>TIDYING</code>状态;</li>
-</ul>
-<h6 id="Stop"><a href="#Stop" class="headerlink" title="Stop"></a>Stop</h6><ul>
-<li>该状态的线程不会接收新任务，也不会处理阻塞队列中的任务，而且会中断正在运行的任务；</li>
-<li>线程池中执行的任务为空,进入<code>TIDYING</code>状态;</li>
-</ul>
-<h6 id="Tidying"><a href="#Tidying" class="headerlink" title="Tidying"></a>Tidying</h6><ul>
-<li>该状态表明所有的任务已经运行终止，记录的任务数量为0。</li>
-<li><code>terminated()</code>执行完毕，进入<code>TERMINATED</code>状态</li>
-</ul>
-<h6 id="Terminated"><a href="#Terminated" class="headerlink" title="Terminated"></a>Terminated</h6><ul>
-<li>该状态表示线程池彻底终止</li>
-</ul>
-<h4 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h4><p>阿里巴巴开发手册并发编程这块有一条：线程池不允许使用Executors去创建，而是通过<code>ThreadPoolExecutor</code>的方式去使用。其实在上述的源码中可以看出来：</p>
-<ul>
-<li><code>newCachedThreadPool</code> 可缓存的线程池，从静态方法可以看出，最大线程数为 <code>Integer.MAX_VALUE</code>，可以认为是无限创建线程，在资源有限的情况下容易引起<code>OOM</code>异常。</li>
-<li><code>newSingleThreadExecutor</code>单线程线程，它的阻塞队列是<code>LinkedBlockingQueue</code>，无界阻塞队列，因此往队列里可以插入无限多的任务，在资源有限的情况下容易引起<code>OOM</code>异常。</li>
-<li><code>newFixedThreadPool</code>，固定长度的线程池，同上，它的阻塞队列是<code>LinkedBlockingQueue</code>，无界阻塞队列，因此往队列里可以插入无限多的任务，在资源有限的情况下容易引起<code>OOM</code>异常。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -715,7 +718,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

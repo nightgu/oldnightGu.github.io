@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-29T12:22:11.207Z</updated>
+  <updated>2020-03-30T10:31:01.197Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SpringBoot+Redis-List类型基本使用方法</title>
+    <link href="http://yoursite.com/2020/03/29/SpringBoot+Redis-List%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2020/03/29/SpringBoot+Redis-List%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</id>
+    <published>2020-03-29T11:53:49.350Z</published>
+    <updated>2020-03-30T10:31:01.197Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;本篇文章整理一下&lt;code&gt;Redis&lt;/code&gt; 的 List 类型基本使用方法，基于&lt;code&gt;spring boot&lt;/code&gt; + &lt;code&gt;redis&lt;/code&gt; 构建项目，&lt;code&gt;lettuce&lt;/code&gt; 作为 &lt;code&gt;redis&lt;/code&gt; 客户端。&lt;/p&gt;
+&lt;h4 id=&quot;列表类型简介&quot;&gt;&lt;a href=&quot;#列表类型简介&quot; class=&quot;headerlink&quot; title=&quot;列表类型简介&quot;&gt;&lt;/a&gt;列表类型简介&lt;/h4&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>SpringBoot+Redis-Hash类型基本使用方法</title>
@@ -38,7 +56,7 @@
     <link href="http://yoursite.com/2020/03/29/SpringBoot+Redis-String%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
     <id>http://yoursite.com/2020/03/29/SpringBoot+Redis-String%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</id>
     <published>2020-03-29T08:18:50.072Z</published>
-    <updated>2020-03-29T08:18:02.722Z</updated>
+    <updated>2020-03-30T10:30:11.579Z</updated>
     
     <summary type="html">
     
