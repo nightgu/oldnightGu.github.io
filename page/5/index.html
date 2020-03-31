@@ -243,6 +243,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.nightgu.xyz/2020/02/23/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E9%AD%85%E5%8A%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/23/%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%88%9D%E6%8E%A2%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E9%AD%85%E5%8A%9B/" itemprop="url">线程池-初探线程池的魅力</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-23T18:48:19+08:00">
+                2020-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>经常在 <code>interview</code> 过程中被询问到 线程池了解多少？具体能否讲讲各个参数的作用？等等问题。在平时的项目中，根据业务场景使用到线程池，同时要确定具体使用哪种类型的线程池，采用什么策略方案进行处理，这些都是需要考虑的。</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>线程池，顾名思义就是一个管理线程的池子。线程池有什么好处呢？在 <code>java</code> 的世界里，线程也是一个对象，创建线程对象经过类加载过程，最后 <code>GC垃圾</code> 回收再销毁这个线程对象，这些过程都是需要资源开销的，而线程池帮助管理线程，这样避免增加线程和销毁线程的资源损耗。</p>
+<p>同时，每次任务到达，只需要从线程池里拿线程，比重新创建线程速度快很多，并且线程每次用完，再放回线程池，可以重复使用，节省资源。</p>
+<h4 id="初识线程池"><a href="#初识线程池" class="headerlink" title="初识线程池"></a>初识线程池</h4><h5 id="线程池结构"><a href="#线程池结构" class="headerlink" title="线程池结构"></a>线程池结构</h5><p>线程池的类 在 <code>juc</code> 包下，线程池的父接口是 <code>Executor</code>，真正的线程池接口是 <code>ExecutorService</code>，其默认实现是 <code>ThreadPoolExecutor</code>。工具类 <code>Executors</code> 里 调用的就是 <code>ThreadPoolExecutor</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ExecutorService</span> <span class="keyword">extends</span> <span class="title">Executor</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">List&lt;Runnable&gt; <span class="title">shutdownNow</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isShutdown</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isTerminated</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">awaitTermination</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException</span>;</span><br><span class="line">    <span class="comment">//.......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractExecutorService</span> <span class="keyword">implements</span> <span class="title">ExecutorService</span></span>&#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolExecutor</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span></span>&#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="线程池创建"><a href="#线程池创建" class="headerlink" title="线程池创建"></a>线程池创建</h5><p>线程池可以通过<code>ThreadPoolExecutor</code>来创建，看一下它的构造函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                          TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                          BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                          ThreadFactory threadFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">                          RejectedExecutionHandler handler)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这边 <code>interview</code> 有时候会被询问 参数的作用。</p>
+<ul>
+<li><code>corePoolSize</code>:  线程池核心线程数最大值</li>
+<li><code>maximumPoolSize</code>: 线程池最大线程数大小</li>
+<li><code>keepAliveTime</code>: 线程池中非核心线程空闲的存活时间大小</li>
+<li><code>unit</code>: 线程空闲存活时间单位</li>
+<li><code>workQueue</code>: 存放任务的阻塞队列</li>
+<li><code>threadFactory</code> : 用于设置创建线程的工厂，可以给创建的线程设置有意义的名字，可方便排查问题。</li>
+<li><code>handler</code>: 线城池的饱和策略事件，主要有四种类型。</li>
+</ul>
+<h5 id="任务执行流程"><a href="#任务执行流程" class="headerlink" title="任务执行流程"></a>任务执行流程</h5><p>任务执行流程看 <code>execute</code> 方法，官方在代码解释了含义。这里有三个判断条件。下面也根据自己的理解画了流程做阐述。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (command == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> c = ctl.get();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*如果`running`的线程少于 `corePoolSize` 线程，尝试给定的命令作为第一个任务去启动一个新线程。调用`addWorker`方法自动检查 `runState` 和  `workerCount` ，从而通过返回 `false` 来防止在不应该添加线程的情况下发出错误警报。*/</span></span><br><span class="line">    <span class="keyword">if</span> (workerCountOf(c) &lt; corePoolSize) &#123;</span><br><span class="line">        <span class="keyword">if</span> (addWorker(command, <span class="keyword">true</span>))</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        c = ctl.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*如果任务排队成功，那么我们仍需要 `double-check` 是否应该添加一个线程（因为现有的线程可能从上次检查后就死掉了，或者自从进入该方法，线程池就关掉了），所以我们重新检查状态并且在必要的时候回滚排队（如果已经停止），或者在没有线程的情况下重新启动线程。*/</span></span><br><span class="line">    <span class="keyword">if</span> (isRunning(c) &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">        <span class="keyword">int</span> recheck = ctl.get();</span><br><span class="line">        <span class="keyword">if</span> (! isRunning(recheck) &amp;&amp; remove(command))</span><br><span class="line">            reject(command);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (workerCountOf(recheck) == <span class="number">0</span>)</span><br><span class="line">            addWorker(<span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*如果无法排队任务，则尝试添加一个新线程。如果添加失败，此时就会知道线程池已关闭或饱和，因此拒绝该任务。*/</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (!addWorker(command, <span class="keyword">false</span>))</span><br><span class="line">        reject(command);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>理解 <code>execute</code>流程</p>
+<p><img src="http://cs.nightgu.xyz/thread/thread-pool-1.jpg" alt=""></p>
+<p>提交一个任务</p>
+<ul>
+<li>线程池里存活的核心线程数小于线程数<code>corePoolSize</code>时，线程池会创建一个核心线程去处理提交的任务；</li>
+<li>如果线程池核心线程数已满<ul>
+<li>任务队列 <code>workQueue</code> 未满，新提交的任务，会被放进任务队列<code>workQueue</code>排队等待执行；</li>
+<li>判断线程数是否达到 <code>maximumPoolSize</code>，即最大线程数是否已满<ul>
+<li>如果没到达，创建一个非核心线程执行提交的任务；</li>
+<li>如果当前的线程数达到了<code>maximumPoolSize</code>，还有新的任务过来的话，直接采用拒绝策略处理。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="策略处理"><a href="#策略处理" class="headerlink" title="策略处理"></a>策略处理</h5><p><code>ThreadPoolExecutor</code> 提供了四种拒绝策略，从<code>ThreadPoolExecutor</code> 的构造函数的参数<code>RejectedExecutionHandler handler</code>，可以看出这四种策略都 <code>implements RejectedExecutionHandler</code> 。</p>
+<ul>
+<li><code>AbortPolicy</code>  (抛出一个异常，默认的)</li>
+<li><code>DiscardPolicy</code> (直接丢弃任务)</li>
+<li><code>DiscardOldestPolicy</code>（丢弃队列里最老的任务，将当前这个任务继续提交给线程池）</li>
+<li><code>CallerRunsPolicy</code>（交给线程池调用所在的线程进行处理)</li>
+</ul>
+<h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>这篇文章只是简单认识线程池，对于在 <code>interview</code> 过程中遇到的“线程池各参数的含义以及如何执行？”的问题 这篇文档可以得到很好解决。常用的几个线程池以及其他知识点等待后续整理。 </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.nightgu.xyz/2020/02/22/Algorithms-O%5E2%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%86%92%E6%B3%A1%E3%80%81%E9%80%89%E6%8B%A9%E3%80%81%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -384,181 +558,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.nightgu.xyz/2020/02/20/mysql-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E8%A7%84%E5%88%99%E6%95%B4%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="nightGu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无处安放的灵魂">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/20/mysql-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E8%A7%84%E5%88%99%E6%95%B4%E7%90%86/" itemprop="url">mysql-联合索引的规则整理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-20T11:42:08+08:00">
-                2020-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p><code>interview</code> 时遇到了关于联合索引的问题，大致问题如下：</p>
-<p>联合索引  <code>A、B、C</code> 三个字段，在 <code>where</code> 条件后 如果只有 <code>A and B</code> ，该索引是否有效？如果 只有 <code>B and C</code>，该索引是否有效？如果 是 <code>A or B</code> ,该索引是否有效？</p>
-<p>联合索引的问题是由 优化 <code>mysql</code>  有哪些措施这问题（优化查询语句、添加索引、联合索引等等解决方案）引申出来的，之前从没想过联合索引的一系列问题，这边做一下研究与整理。</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>联合索引，又名复合索引，两个或更多列创建的索引称为 联合索引。<code>mysql</code> 从左到右使用索引中的字段，一个查询可以只使用索引中的一部分，但必须包含最左侧部分。例如联合索引 <code>index_key(a,b,c)</code>，可以支持 <code>a | a,b | a,c |a,b,c</code>  四种组合进行查找，不支持 <code>b,c</code> 组合进行查找。如果 使用 <code>or</code> 连接，则索引不会作用。</p>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>新建一张 <code>user</code> 表</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'姓名'</span>,</span><br><span class="line">  <span class="string">`password`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'密码'</span>,</span><br><span class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'年龄'</span>,</span><br><span class="line">  <span class="string">`email`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'邮箱'</span>,</span><br><span class="line">  <span class="string">`sex`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'性别'</span>,</span><br><span class="line">  <span class="string">`createTime`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">  <span class="string">`roleId`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'角色ID'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`query_index`</span> (<span class="string">`name`</span>,<span class="string">`age`</span>,<span class="string">`sex`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br></pre></td></tr></table></figure>
-
-<p>假设下列创建的联合索引都满足索引创建条件。通过如下<code>sql</code> create。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> query_index <span class="keyword">on</span> <span class="keyword">user</span> (<span class="keyword">name</span>,age,sex);</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="单字段"><a href="#单字段" class="headerlink" title="单字段"></a>单字段</h5><h6 id="查询条件为name"><a href="#查询条件为name" class="headerlink" title="查询条件为name"></a>查询条件为<code>name</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> ;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-1.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
-<h6 id="查询条件为age"><a href="#查询条件为age" class="headerlink" title="查询条件为age"></a>查询条件为<code>age</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-2.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
-<h6 id="查询条件为-sex"><a href="#查询条件为-sex" class="headerlink" title="查询条件为 sex"></a>查询条件为 <code>sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-3.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
-<h5 id="双字段"><a href="#双字段" class="headerlink" title="双字段"></a>双字段</h5><h6 id="查询条件为-name-and-age"><a href="#查询条件为-name-and-age" class="headerlink" title="查询条件为 name and age"></a>查询条件为 <code>name and age</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-4.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
-<p>如果 <code>name and age</code> 切换先后顺序。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span> <span class="keyword">and</span> <span class="keyword">name</span> = <span class="string">'nightGu'</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-5.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
-<h6 id="查询条件为-age-and-sex"><a href="#查询条件为-age-and-sex" class="headerlink" title="查询条件为 age and sex"></a>查询条件为 <code>age and sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  age = <span class="number">18</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-6.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>无效</strong>。</p>
-<h6 id="查询条件为-name-and-sex"><a href="#查询条件为-name-and-sex" class="headerlink" title="查询条件为 name and sex"></a>查询条件为 <code>name and sex</code></h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-7.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
-<h5 id="三字段"><a href="#三字段" class="headerlink" title="三字段"></a>三字段</h5><h6 id="查询条件为-name-and-age-and-sex"><a href="#查询条件为-name-and-age-and-sex" class="headerlink" title="查询条件为  name and age and sex"></a>查询条件为  name and age and sex</h6><p>这是 联合索引 最正统的用法。肯定是有效的。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">and</span> age = <span class="number">18</span> <span class="keyword">and</span> sex = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-8.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索引 <strong>有效</strong>。</p>
-<h5 id="OR-连接符"><a href="#OR-连接符" class="headerlink" title="OR 连接符"></a>OR 连接符</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span>  <span class="keyword">name</span> = <span class="string">'nightGu'</span> <span class="keyword">or</span> age = <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://cs.nightgu.xyz/db/db-union-index-9.png" alt=""></p>
-<p>通过 <code>key</code> 可以看出，联合索 <strong>无效</strong>。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>针对 联合索引 的使用，必须满足 最左前缀原则，即 以最左边的为起点。当创建 <code>（a,b,c）</code>联合索引时，相当于创建了以 <code>a</code> 为 起点的 其他联合索引，如 <code>（a,b）、（a,b,c）</code>等。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/">prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/">next</a>
+    <a class="extend prev" rel="prev" href="/page/4/">prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/">next</a>
   </nav>
 
 
@@ -604,7 +608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

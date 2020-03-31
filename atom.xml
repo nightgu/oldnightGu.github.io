@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.nightgu.xyz/"/>
-  <updated>2020-03-30T10:31:01.197Z</updated>
+  <updated>2020-03-31T13:19:30.033Z</updated>
   <id>http://blog.nightgu.xyz/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SpringBoot+Redis-Set类型基本使用方法</title>
+    <link href="http://blog.nightgu.xyz/2020/03/31/SpringBoot+Redis-Set%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
+    <id>http://blog.nightgu.xyz/2020/03/31/SpringBoot+Redis-Set%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</id>
+    <published>2020-03-31T13:20:00.104Z</published>
+    <updated>2020-03-31T13:19:30.033Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;本篇文章整理一下&lt;code&gt;Redis&lt;/code&gt; 的 Set 类型基本使用方法，基于&lt;code&gt;spring boot&lt;/code&gt; + &lt;code&gt;redis&lt;/code&gt; 构建项目，&lt;code&gt;lettuce&lt;/code&gt; 作为 &lt;code&gt;redis&lt;/code&gt; 客户端。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>SpringBoot+Redis-List类型基本使用方法</title>
