@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-cn">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="无处安放的灵魂" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言本篇文章整理一下Redis 的 ZSet 类型基本使用方法，基于spring boot + redis 构建项目，lettuce 作为 redis 客户端。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot+Redis-ZSet类型基本使用方法">
+<meta property="og:url" content="http://blog.nightgu.xyz/2020/03/31/SpringBoot+Redis-ZSet%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="无处安放的灵魂">
+<meta property="og:description" content="前言本篇文章整理一下Redis 的 ZSet 类型基本使用方法，基于spring boot + redis 构建项目，lettuce 作为 redis 客户端。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-31T13:24:33.507Z">
+<meta property="article:modified_time" content="2020-04-05T05:38:37.050Z">
+<meta property="article:author" content="nightGu">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.nightgu.xyz/2020/03/31/SpringBoot+Redis-ZSet类型基本使用方法/"/>
+
+
+
+
+
+  <title>SpringBoot+Redis-ZSet类型基本使用方法 | 无处安放的灵魂</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无处安放的灵魂</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">乘风破浪会有时，直挂云帆济沧海</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.nightgu.xyz/2020/03/31/SpringBoot+Redis-ZSet%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="nightGu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无处安放的灵魂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot+Redis-ZSet类型基本使用方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-31T21:24:33+08:00">
+                2020-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>本篇文章整理一下<code>Redis</code> 的 <code>ZSet</code> 类型基本使用方法，基于<code>spring boot</code> + <code>redis</code> 构建项目，<code>lettuce</code> 作为 <code>redis</code> 客户端。</p>
+<a id="more"></a>
+
+<h4 id="有序集合简介"><a href="#有序集合简介" class="headerlink" title="有序集合简介"></a>有序集合简介</h4><p><code>Redis</code>的有序集合（sorted set）同时具有“<strong>有序</strong>”和“<strong>集合</strong>”两种性质。</p>
+<ul>
+<li><p>这种数据结构中的每个元素都由一个<strong>成员</strong>和一个与成员相关联的<strong>分值</strong>组成，其中成员以<strong>字符串方式存储</strong>，而<strong>分值则以64位双精度浮点数格式存储</strong>。</p>
+</li>
+<li><p>与集合一样，有序集合的每个成员都是独一无二的，并且有序集合的成员按照它们各自的分值大小进行排序。如：3.14的成员将小于分值为10.24的成员。</p>
+</li>
+<li><p>有序集合的分值除了可以是数字之外，还可以是字符串”+inf”或者”-inf”，这两个特殊值分别用于表示无穷大和无穷小。</p>
+</li>
+<li><p>虽然同一个有序集合不能存储相同的成员，但不同成员的分值却可以是相同的。如果分值相同，则按照字典排序，如“apple”小于”zero”。</p>
+</li>
+</ul>
+<h4 id="ZSet类型基本使用方法"><a href="#ZSet类型基本使用方法" class="headerlink" title="ZSet类型基本使用方法"></a><code>ZSet</code>类型基本使用方法</h4><h5 id="ZAdd"><a href="#ZAdd" class="headerlink" title="ZAdd"></a><code>ZAdd</code></h5><p>添加或更新成员。返回成功添加的新成员数量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZAdd sorted_set [XX|NX][CH] score member [sore member]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果用户在执行<code>ZAdd</code>命令时，给定成员已经存在于有序集合中，并且给定的分值和成员现有的分值并不相同，那么<code>ZAdd</code>命令将使用给定的新分值去覆盖现有的旧分值；</p>
+</li>
+<li><p>使用可选的 <code>XX</code> 选项或者 <code>NX</code> 选项来显式地指示命令只执行更新操作或者只执行添加操作。</p>
+<ul>
+<li>带有<code>XX</code>选项的<code>ZAdd</code>命令只会对有序集合已有的成员进行更新，而不会向有序集合添加任何新成员。</li>
+<li>带有<code>NX</code>选项的<code>ZAdd</code>命令只会向有序集合添加新成员，而不会对已有的成员进行任何更新。</li>
+</ul>
+</li>
+<li><p><code>Redis 3.0.2</code>版本开始，用户可以通过给定CH选项，让<code>ZAdd</code>命令返回被修改（changed）成员的数量作为返回值</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加一个</span></span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"salary"</span>,<span class="string">"peter"</span>,<span class="number">5000</span>);<span class="comment">//true</span></span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"salary"</span>,<span class="string">"jack"</span>,<span class="number">4000</span>);<span class="comment">//true</span></span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"salary"</span>,<span class="string">"mary"</span>,<span class="number">3500</span>);<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//添加多个</span></span><br><span class="line">Set&lt;ZSetOperations.TypedTuple&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">set.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"lucy"</span>,<span class="number">5500.0</span>));</span><br><span class="line">set.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"daniel"</span>,<span class="number">6000.0</span>));</span><br><span class="line">set.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"anny"</span>,<span class="number">4000.0</span>));</span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"salary"</span>,set);<span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="ZRem"><a href="#ZRem" class="headerlink" title="ZRem"></a><code>ZRem</code></h5><p>移除指定的成员。返回被移除成员的数量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRem sorted_set member [member......]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>某个成员并不存在于有序集合中，那么<code>ZRem</code>将自动忽略该成员。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().remove(<span class="string">"salary"</span>,<span class="string">"anny"</span>);<span class="comment">//1</span></span><br><span class="line">redisTemplate.opsForZSet().remove(<span class="string">"salary"</span>,<span class="string">"lucy"</span>,<span class="string">"noOne"</span>);<span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZScore"><a href="#ZScore" class="headerlink" title="ZScore"></a><code>ZScore</code></h5><p>获取成员的分值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZScore sorted_set member</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>给定的有序集合并不存在，或者有序集合中并未包含给定的成员，那么<code>ZScore</code>命令将返回空值。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().score(<span class="string">"salary"</span>,<span class="string">"mary"</span>);<span class="comment">//3500.0</span></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().score(<span class="string">"salary"</span>,<span class="string">"peter"</span>);<span class="comment">//5000.0</span></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().score(<span class="string">"salary"</span>,<span class="string">"noOne"</span>);<span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZIncrBy"><a href="#ZIncrBy" class="headerlink" title="ZIncrBy"></a><code>ZIncrBy</code></h5><p>对成员的分值执行自增或自减操作。返回当前分值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZIncrBy sorted_set increment member</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不存在的键处理：创建有序集合，添加到有序集合中，并把给定的增量设置为该成员的分值，相当于<code>ZAdd</code>新集合。</li>
+<li>不存在的成员：添加到有序集合中，并把给定的增量设置为该成员的分值，效果相当于执行<code>ZAdd</code>命令。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().incrementScore(<span class="string">"salary"</span>,<span class="string">"mary"</span>,<span class="number">1000</span>);<span class="comment">//自增操作</span></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().incrementScore(<span class="string">"salary"</span>,<span class="string">"peter"</span>,-<span class="number">1000</span>);<span class="comment">//自减操作</span></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().incrementScore(<span class="string">"salary"</span>,<span class="string">"johnny"</span>,<span class="number">2000</span>);<span class="comment">//添加先来的johnny</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZCard"><a href="#ZCard" class="headerlink" title="ZCard"></a><code>ZCard</code></h5><p> 获取有序集合的大小。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZCard sorted_set</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>有序集合并不存在，那么<code>ZCard</code> 命令将返回0。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().zCard(<span class="string">"salary"</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().zCard(<span class="string">"no-zSet"</span>);<span class="comment">//0</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h5 id="ZRank、ZRevRank"><a href="#ZRank、ZRevRank" class="headerlink" title="ZRank、ZRevRank"></a><code>ZRank、ZRevRank</code></h5><p><code>ZRank</code>：返回成员的升序排列排名。</p>
+<p><code>ZRevRank</code>：返回成员的降序排列排名。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ZRank sorted_set</span><br><span class="line">ZRevRank sorted_set</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>有序集合并不存在，或者给定的成员并不存在于有序集合当中，那么<code>ZRank</code>命令和<code>ZRevRank</code>命令将返回一个空值。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().rank(<span class="string">"salary"</span>,<span class="string">"mary"</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().reverseRank(<span class="string">"salary"</span>,<span class="string">"johnny"</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().reverseRank(<span class="string">"salary"</span>,<span class="string">"noOne"</span>);<span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZRange、ZRevRange"><a href="#ZRange、ZRevRange" class="headerlink" title="ZRange、ZRevRange"></a><code>ZRange、ZRevRange</code></h5><p>获取指定索引范围内的成员。</p>
+<p><code>ZRange</code>：以升序排列方式，从有序集合中获取指定索引范围内的成员</p>
+<p><code>ZRevRange</code>：以降序排列方式，从有序集合中获取指定索引范围内的成员</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ZRange sorted_set start end</span><br><span class="line">ZRevRange sorted_set start end</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>start索引和end索引指定的是闭区间索引范围</p>
+</li>
+<li><p><code>ZRange命令和ZRevRange</code>命令除了可以接受正数索引之外，还可以接受负数索引</p>
+</li>
+<li><p>给定可选的<code>WithScores</code>选项获取成员及其分值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRange sorted_set start end [withScores]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给定的有序集合并不存在，那么命令<code>ZRange</code>和<code>ZRevRange</code>命令将返回一个空列表</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().range(<span class="string">"salary"</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().reverseRange(<span class="string">"salary"</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().range(<span class="string">"salary"</span>,-<span class="number">3</span>,-<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().rangeWithScores(<span class="string">"salary"</span>,<span class="number">0</span>,-<span class="number">1</span>);<span class="comment">//获取成员及其分值</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZRangeByScore、ZRevRangeByScore"><a href="#ZRangeByScore、ZRevRangeByScore" class="headerlink" title="ZRangeByScore、ZRevRangeByScore"></a><code>ZRangeByScore、ZRevRangeByScore</code></h5><p>获取指定分值范围内的成员。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ZRangeByScore sorted_set min max [WithScores] [limit offset count]</span><br><span class="line"></span><br><span class="line">ZRevRangeByScore sorted_set max  min [WithScores] [limit offset count]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>min参数和max参数分别用于指定想要获取的成员的最小分值和最大分值。闭合区间</p>
+</li>
+<li><p>给定可选的<code>WithScores</code>选项获取成员及其分值</p>
+</li>
+<li><p>可选的limit选项来限制命令返回的成员数量 </p>
+<ul>
+<li>limit 选项接受offset和count两个参数作为输入，其中offset参数用于指定命令在返回结果之前需要跳过的成员数量，而count参数则用于指示命令最多可以返回多少个成员。比如offset参数的值为0，表示命令不需要跳过任何成员</li>
+</ul>
+</li>
+<li><p>在分值参数的前面加上一个单括号“(”，作为开合区间</p>
+</li>
+<li><p>特殊值+inf或者-inf，前者用于表示无穷大，而后者则用于表示无穷小</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().rangeByScore(<span class="string">"salary"</span>,<span class="number">2000</span>,<span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().rangeByScore(<span class="string">"salary"</span>,<span class="number">2000</span>,<span class="number">5000</span>,<span class="number">0</span>,<span class="number">2</span>);<span class="comment">//limit</span></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().reverseRangeByScore(<span class="string">"salary"</span>,<span class="number">2000</span>,<span class="number">5000</span>;</span><br><span class="line">                                                                                   redisTemplate.opsForZSet().reverseRangeByScore(<span class="string">"salary"</span>,<span class="number">2000</span>,<span class="number">5000</span>,<span class="number">0</span>,<span class="number">2</span>);<span class="comment">//limit</span></span><br><span class="line">                                               </span><br><span class="line">redisTemplate.opsForZSet().rangeByScoreWithScores(<span class="string">"salary"</span>,<span class="number">2000</span>,<span class="number">5000</span>);<span class="comment">//withScores</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZCount"><a href="#ZCount" class="headerlink" title="ZCount"></a><code>ZCount</code></h5><p>统计指定分值范围内的成员数量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZCount sorted_set min max</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用+inf表示无穷大分值，使用-inf表示无穷小分值，或者使用单括号(定义开区间分值范围。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().count(<span class="string">"salary"</span>,<span class="number">2000</span>,<span class="number">5000</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZRemRangeByRank"><a href="#ZRemRangeByRank" class="headerlink" title="ZRemRangeByRank"></a><code>ZRemRangeByRank</code></h5><p>移除指定排名范围内的成员。返回被移除的成员数量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRemRangeByRank sorted_set start end</span><br></pre></td></tr></table></figure>
+
+<p><code>redisTemplate</code> 里没找到对应的功能方法，看到有个类似的<code>removeRange</code>，移除前也是按照排序好的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().removeRange(<span class="string">"salary"</span>,<span class="number">0</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="ZRemRangeByScore"><a href="#ZRemRangeByScore" class="headerlink" title="ZRemRangeByScore"></a><code>ZRemRangeByScore</code></h5><p>移除指定分值范围内的成员。返回被移除成员的数量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRemRangeByScore  sorted_set min max</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>min max 默认为闭区间分值范围，但用户可以使用(符号定义闭区间，或者使用+inf和-inf表示正无限分值或者负无限分值</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().removeRangeByScore(<span class="string">"salary"</span>,<span class="number">4500</span>,<span class="number">5500</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="ZUnionStore、ZInterStore"><a href="#ZUnionStore、ZInterStore" class="headerlink" title="ZUnionStore、ZInterStore"></a><code>ZUnionStore、ZInterStore</code></h5><p>有序集合的并集运算和交集运算</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ZUnionStore destination numbers sorted_set [sorted_set......] [Aggregate min|sum|max] [weights weight [weight ....]]</span><br><span class="line"></span><br><span class="line">ZInterStore destination numbers sorted_set [sorted_set......] [Aggregate min|sum|max] [weights weight [weight ....]]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>命令的<code>numbers</code>参数用于指定参与计算的有序集合数量，之后的一个或多个<code>sorted_set</code>参数则用于指定参与计算的各个有序集合键，计算得出的结果则会存储到destination参数指定的键中。</p>
+</li>
+<li><p>可选的<code>Aggregate</code>选项,可以决定使用哪个聚合函数来计算结果有序集合成员的分值</p>
+<ul>
+<li>sum：把给定的有序集合中所有相同成员的分值都加起来，它们的和就是结果有序集合中的分值；（默认）</li>
+<li>min：把给定的有序集合中所有相同成员的分值选出最小的分值，并把它作为结果有序集合中的分值；</li>
+<li>max：把给定的有序集合中所有相同成员的分值选出最大的分值，并把它作为结果有序集合中的分值。</li>
+</ul>
+</li>
+<li><p>可选的weights参数为各个给定有序集合的成员分值设置权重。为每个给定的有序集合分别设置一个权重，命令会将这个权重与成员的分值相乘，得出成员的新分值，然后执行聚合计算。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;ZSetOperations.TypedTuple&gt; set1 = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"a"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"b"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"c"</span>,<span class="number">1.0</span>));</span><br><span class="line"></span><br><span class="line">Set&lt;ZSetOperations.TypedTuple&gt; set2 = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">set2.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"c"</span>,<span class="number">2.0</span>));</span><br><span class="line">set2.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"d"</span>,<span class="number">2.0</span>));</span><br><span class="line">set2.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"e"</span>,<span class="number">2.0</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//新增两个集合</span></span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"sorted_set1"</span>,set1);</span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"sorted_set2"</span>,set2);</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>对于并集和交集，相同的成员的分值会相加，如上面的c成员。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().unionAndStore(<span class="string">"sorted_set1"</span>,<span class="string">"sorted_set2"</span>,<span class="string">"union_set__result_1"</span>);<span class="comment">//5	</span></span><br><span class="line">a:<span class="number">1.0</span></span><br><span class="line">b:<span class="number">1.0</span></span><br><span class="line">d:<span class="number">2.0</span></span><br><span class="line">e:<span class="number">2.0</span></span><br><span class="line">c:<span class="number">3.0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().intersectAndStore(<span class="string">"sorted_set1"</span>,<span class="string">"sorted_set2"</span>,<span class="string">"inter_set__result_1"</span>);<span class="comment">//1</span></span><br><span class="line">c:<span class="number">3.0</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Aggregate选项 和 Weights选项</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForZSet().unionAndStore(<span class="string">"sorted_set1"</span>,Arrays.asList(<span class="string">"sorted_set2"</span>),<span class="string">"union_set__result_1"</span>, RedisZSetCommands.Aggregate.MIN);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">redisTemplate.opsForZSet().unionAndStore(<span class="string">"sorted_set1"</span>,Arrays.asList(<span class="string">"sorted_set2"</span>),<span class="string">"union_set__result_2"</span>, RedisZSetCommands.Aggregate.MAX, RedisZSetCommands.Weights.of(<span class="number">2</span>,<span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p>对于拥有不同分值的有序集合成员来说，成员的大小将由分值决定，至于分值相同的成员，它们的大小则由该成员在字典序中的大小决定。这种排列规则的一个特例是，当有序集合的所有成员都拥有相同的分值时，有序集合的成员将不再根据分值进行排序，而是根据字典序进行排序。</p>
+<p><code>Redis</code>提供了相应的<code>ZRangeByLex</code>、<code>ZRevRangeByLex</code> 、<code>ZLexCount</code>和<code>ZRemRangeByLex</code>命令，这些命令可以分别对字典序排列的有序集合执行升序排列的范围获取操作、降序排列的范围获取操作、统计位于字典序指定范围内的成员数量以及移除位于字典序指定范围内的成员。</p>
+<h5 id="ZRangeByLex"><a href="#ZRangeByLex" class="headerlink" title="ZRangeByLex"></a><code>ZRangeByLex</code></h5><p>返回指定字典序范围内的成员。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRangeByLex sorted_set min max [limit offset count]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>min参数和max参数用于指定用户想要获取的字典序范围</p>
+<ul>
+<li>带有[符号的值表示在结果中包含与给定值具有同等字典序大小的成员</li>
+<li>带有(符号的值表示在结果中不包含与给定值具有同等字典序大小的成员。</li>
+<li>加号+表示无穷大。</li>
+<li>减号-表示无穷小。</li>
+</ul>
+</li>
+<li><p>可选的limit选项来限制命令返回的成员数量。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;ZSetOperations.TypedTuple&gt; set1 = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"address"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"after"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"apple"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"bamboo"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"banana"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"bear"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"book"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"candy"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"cat"</span>,<span class="number">1.0</span>));</span><br><span class="line">set1.add(<span class="keyword">new</span> DefaultTypedTuple(<span class="string">"client"</span>,<span class="number">1.0</span>));</span><br><span class="line">redisTemplate.opsForZSet().add(<span class="string">"words"</span>,set1);</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Set set = redisTemplate.opsForZSet().rangeByLex(<span class="string">"words"</span>, RedisZSetCommands.Range.unbounded().lte(<span class="string">"b"</span>));</span><br><span class="line">set.stream().forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">address</span><br><span class="line">after</span><br><span class="line">apple</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set set = redisTemplate.opsForZSet().rangeByLex(<span class="string">"words"</span>,RedisZSetCommands.Range.unbounded().lte(<span class="string">"b"</span>), RedisZSetCommands.Limit.unlimited());</span><br><span class="line">set.stream().forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h5 id="ZRevRangeByLex"><a href="#ZRevRangeByLex" class="headerlink" title="ZRevRangeByLex"></a><code>ZRevRangeByLex</code></h5><p><code>ZRevRangeByLex</code>命令是逆序版的<code>ZRangeByLex</code> 命令，它会以逆字典序的方式返回指定范围内的成员。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRevRangeByLex sorted_set min max [limit offset count]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h5 id="ZLexCount"><a href="#ZLexCount" class="headerlink" title="ZLexCount"></a><code>ZLexCount</code></h5><p>统计位于字典序指定范围内的成员数量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZLexCount sorted_set min max</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>min参数和max参数的格式与<code>ZRangeByLex</code> 命令以及<code>ZLexCount</code> 命令接受的min参数和max参数的格式完全相同。<code>ZRemRangeByLex</code>命令在移除用户指定的成员之后，将返回被移除成员的数量作为命令的返回值</li>
+</ul>
+<p><code>redisTemplate</code>没找到对应的方法。</p>
+<h5 id="ZRemRangeByLex"><a href="#ZRemRangeByLex" class="headerlink" title="ZRemRangeByLex"></a><code>ZRemRangeByLex</code></h5><p>移除位于字典序指定范围内的成员。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZRemRangeByLex sorted_set min max</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>min参数和max参数的格式与<code>ZRangeByLex</code> 命令以及<code>ZLexCount</code> 命令接受的min参数和max参数的格式完全相同。<code>ZRemRangeByLex</code>命令在移除用户指定的成员之后，将返回被移除成员的数量作为命令的返回值</li>
+</ul>
+<p><code>redisTemplate</code>没找到对应的方法。</p>
+<h5 id="ZPopMax、ZPopMin"><a href="#ZPopMax、ZPopMin" class="headerlink" title="ZPopMax、ZPopMin"></a><code>ZPopMax、ZPopMin</code></h5><p>弹出分值最高、最低的成员</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ZPopMax sorted_set [count]</span><br><span class="line">ZPopMin sorted_set [count]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以通过可选的count参数来指定被移除元素的数量。</li>
+</ul>
+<p><code>redisTemplate</code>没找到对应的方法。</p>
+<h5 id="BZPopMax、BZPopMin"><a href="#BZPopMax、BZPopMin" class="headerlink" title="BZPopMax、BZPopMin"></a><code>BZPopMax、BZPopMin</code></h5><p>阻塞式最大/最小元素弹出操作。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BZPopMax sorted_set [sorted_set.....] timeout</span><br><span class="line">BZPopMin sorted_set [sorted_set.....] timeout</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>接受任意多个有序集合和一个秒级精度的超时时限作为参数</li>
+<li>可以通过将超时时限设置为0来让命令一直阻塞，直到可弹出的元素出现为止</li>
+<li><code>BZPopMax</code>命令和<code>BZPopMin</code>命令在成功弹出元素时将返回一个包含3个项的列表，这3个项分别为被弹出元素所在的有序集合、被弹出元素的成员以及被弹出元素的分值。</li>
+<li>等待超时而未能弹出任何元素，那么它们将返回一个空值</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/31/SpringBoot+Redis-Set%E7%B1%BB%E5%9E%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" rel="next" title="SpringBoot+Redis-Set类型基本使用方法">
+                <i class="fa fa-chevron-left"></i> SpringBoot+Redis-Set类型基本使用方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">nightGu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序集合简介"><span class="nav-number">2.</span> <span class="nav-text">有序集合简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZSet类型基本使用方法"><span class="nav-number">3.</span> <span class="nav-text">ZSet类型基本使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ZAdd"><span class="nav-number">3.1.</span> <span class="nav-text">ZAdd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRem"><span class="nav-number">3.2.</span> <span class="nav-text">ZRem</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZScore"><span class="nav-number">3.3.</span> <span class="nav-text">ZScore</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZIncrBy"><span class="nav-number">3.4.</span> <span class="nav-text">ZIncrBy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZCard"><span class="nav-number">3.5.</span> <span class="nav-text">ZCard</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRank、ZRevRank"><span class="nav-number">3.6.</span> <span class="nav-text">ZRank、ZRevRank</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRange、ZRevRange"><span class="nav-number">3.7.</span> <span class="nav-text">ZRange、ZRevRange</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRangeByScore、ZRevRangeByScore"><span class="nav-number">3.8.</span> <span class="nav-text">ZRangeByScore、ZRevRangeByScore</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZCount"><span class="nav-number">3.9.</span> <span class="nav-text">ZCount</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRemRangeByRank"><span class="nav-number">3.10.</span> <span class="nav-text">ZRemRangeByRank</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRemRangeByScore"><span class="nav-number">3.11.</span> <span class="nav-text">ZRemRangeByScore</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZUnionStore、ZInterStore"><span class="nav-number">3.12.</span> <span class="nav-text">ZUnionStore、ZInterStore</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRangeByLex"><span class="nav-number">3.13.</span> <span class="nav-text">ZRangeByLex</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRevRangeByLex"><span class="nav-number">3.14.</span> <span class="nav-text">ZRevRangeByLex</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZLexCount"><span class="nav-number">3.15.</span> <span class="nav-text">ZLexCount</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZRemRangeByLex"><span class="nav-number">3.16.</span> <span class="nav-text">ZRemRangeByLex</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ZPopMax、ZPopMin"><span class="nav-number">3.17.</span> <span class="nav-text">ZPopMax、ZPopMin</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BZPopMax、BZPopMin"><span class="nav-number">3.18.</span> <span class="nav-text">BZPopMax、BZPopMin</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">nightGu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
